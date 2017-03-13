@@ -1,4 +1,4 @@
-	//Assignment 2 CPSC449
+//Assignment 2 CPSC449
 	//James Gilders 10062731
 	//Carlin Liu 10123584
 	//
@@ -217,29 +217,38 @@ public class Parser {
 		String MethodName = "";
 		String[] ListTypes = new String[data.size()];
 		String[] DataArray = new String[data.size()];
+		LinkedList temp1 = new LinkedList();
+		int i;
+		int j = data.size();
+		while(0 < j){
+			temp1.add(data.removeLast());
+			j--;
+		}
+		data = temp1;
 		
-		
-		for (int i = 0; i < data.size(); i++) {
+		for (i = 0; i < data.size(); i++) {
 		   DataArray[i] = (String) data.get(i);
 		}
-		
 		TreeMap<String, Class> TM = new TreeMap<String, Class>();
-		int i = 0;
-		int j = ListTypes.length;
+		i = 0;
+		j = ListTypes.length;
 		while(i <j){
-			ListTypes[i] =  WordType(DataArray[i]);
+			temp =  WordType(DataArray[i]);
+			if(temp == "String.class"){
+				DataArray[i] = (String) DataArray[i].replace("\"", "");
+			}
+			ListTypes[i] = temp;
 			i++;
 		}
-		if(ListTypes[(data.size() - 1)] == "FUNCTION"){
-			MethodName = DataArray[data.size() -1];
-		}
+		if(ListTypes[0] == "FUNCTION")
+			MethodName = DataArray[0];
 		//Creates a map to put the proper class into the getMethod in the try
 		Class Alpha = int.class;
 		Class Betta = String.class;
 		Class Theta = float.class;
 		Class TEMP;
-		i = 0;
-		j = ListTypes.length - 2;
+		i = 1;
+		j = ListTypes.length - 1;
 		String MapIndex = "P";
 		
 		//Determine which class to place in each map location
@@ -263,7 +272,7 @@ public class Parser {
 			finally{
 				//Fill
 			}
-	}
+}
 	
 //============================================================================	
 //////////////////////////////////////////////////////////////////////////////
@@ -276,8 +285,8 @@ public class Parser {
 //objects which are the appropriate types.
 	private LinkedList ParameterLister(String [] Parameters, TreeMap<String, Class> TM){
 		LinkedList LL = new LinkedList();
-		int i = 0;
-		int j = Parameters.length - 2;
+		int i = 1;
+		int j = Parameters.length - 1;
 		String temp = "";
 		String MapIndex = "P";
 		while(i <= j){
@@ -315,17 +324,17 @@ public class Parser {
 			returnValue = (method.invoke(instance));
 		}
 		else if(paramaterNum == 2){
-			method = ClassName.getMethod(MethodName, TM.get("P0"));
+			method = ClassName.getMethod(MethodName, TM.get("P1"));
 			RT = method.getReturnType();
 			returnValue = method.invoke(instance, Parameters.get(0));
 		}
 		else if(paramaterNum == 3){
-			method = ClassName.getMethod(MethodName, TM.get("P0"), TM.get("P1"));
+			method = ClassName.getMethod(MethodName, TM.get("P1"), TM.get("P2"));
 			RT = method.getReturnType();
 			returnValue = (method.invoke(instance, Parameters.get(0), Parameters.get(1)));
 		}
 		else if(paramaterNum == 4){
-			method = ClassName.getMethod(MethodName, TM.get("P0"), TM.get("P1"), TM.get("P2"));
+			method = ClassName.getMethod(MethodName, TM.get("P1"), TM.get("P2"), TM.get("P3"));
 			RT = method.getReturnType();
 			returnValue = (method.invoke(instance, Parameters.get(0), Parameters.get(1), Parameters.get(2)));
 		}
@@ -336,6 +345,8 @@ public class Parser {
 			return(Integer.toString((int)returnValue));
 		}
 		else if(RT == String.class){
+			String temp = (String) returnValue;
+			temp = '"' + temp + '"'; 
 			return((String) returnValue);
 		}
 		else if (RT == float.class){
@@ -521,20 +532,3 @@ public class Parser {
 		}
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
