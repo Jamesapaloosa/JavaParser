@@ -5,31 +5,70 @@
 
 
 import java.lang.reflect.*;
-public class Methods {
+public class Methods
+{
+	public static Boolean Verbose = false;
+	public static Boolean Run = true;
+	public static String MenuC;
+	public static Interface MainI = new Interface();
+	public static Parser P;
 
 	//Main Starts here
-	public static void main(String[]args){
+	
+	public static void main(String[] args)
+	{
 		//Main variables
-		Boolean Verbose = false;
-		Boolean Run = true;
-		Parser P;
-		String MenuC;
+
+		ConsoleParse cp = new ConsoleParse();
 		
-		//PUT YOUR CODE FOR INPUT PARSER HERE CARILIN
+		String functionClassName = "";
 		
-		try{
-			P = new Parser("TESTER");
+		//Parse over input
+		if(args.length == 0)
+		{
+			System.out.println("len 0");
+			Verbose = cp.ParseProgramInput0(args, Verbose);
+		}
+		else if(args.length == 1)
+		{
+			System.out.println("len 1");
+			Verbose = cp.ParseProgramInput1(args, Verbose);
+		}
+		else
+		{
+			System.out.println("else");
+			Verbose = cp.ParseProgramInput1(args, Verbose);
+			
+			try
+			{
+				String[] jarString = args[1].split("\\.");
+				//set jar name here. if not found, catch
+			}
+			catch(Exception e)
+			{
+				System.out.println("Could not find class: " + args[1]);
+			}
+			try
+			{
+				functionClassName = args[2];
+				P = new Parser(functionClassName);
+			}
+			catch(Exception e)
+			{
+				System.out.println("Could not find class: " + functionClassName);
+				P = new Parser();
+			}
+			
+			mainLoop();
 			
 		}
-		catch(ClassNotFoundException e){
-			Run = false;
-			P = new Parser();
-		}
-		Interface MainI = new Interface();
-		
-		//Main Menu and menu selection decided here
-		MainI.PrintMenu(); //This must be bypassed but isnt
-		while(Run == true){
+			
+	}
+	
+	public static void mainLoop()
+	{
+		while(Run == true)
+		{
 			System.out.print("> ");
 			MenuC = MainI.GetInput();
 			switch(MenuC)
@@ -38,40 +77,32 @@ public class Methods {
 					Run = false;
 					MainI.PrintBye();
 					break;
-					
+
 				case "v":
 					if(Verbose == false)
 					{
 						Verbose = true;
-						Parser.verbose = true;
 						MainI.PrintVerboseOn();
 					}
 					else
 					{
 						MainI.PrintVerboseOff();
 						Verbose = false;
-						Parser.verbose = false;
 					}
 					break;
-				
-				case "f":			
+
+				case "f":
 					P.PrintFunctions();
 					break;
-					
-				case "?":			
+
+				case "?":
 					MainI.PrintMenu();
 					break;
-				
+
 				default:
 					P.ParseExpression(MenuC);
-//					int [] temp = P.MethodLocations(MenuC);
-//					int i = 0;
-//					while (i < temp.length){
-//						System.out.println(temp[i]);
-//						i++;
-//					}
+			}
 		}
-		
 	}
-	}
+	
 }
