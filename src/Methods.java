@@ -72,7 +72,7 @@ public class Methods
 			}
 			catch(Exception e)
 			{
-				System.out.println("Could not find class: " + args[1]);
+				System.out.println("Could not find jar: " + args[1]);
 			}
 			try
 			{
