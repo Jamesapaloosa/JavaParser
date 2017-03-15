@@ -7,6 +7,9 @@
 	//Version March 8.12.49
 	//
 
+	// TO IMPLEMENT:
+	// public [returnType: Object? I dunno] executeMethod(String function, ArrayList<Object> parameters) throws blah blah blah
+	// parameters should be ArrayList<Object> and not ArrayList<Node>, since Object is working nicer
 
 	//Current Bugs
 
