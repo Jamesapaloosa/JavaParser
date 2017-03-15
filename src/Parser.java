@@ -211,138 +211,29 @@ public class Parser {
 //																			//
 //////////////////////////////////////////////////////////////////////////////
 //============================================================================
-	//Implements the desired method with the provided parameters
-	//Not finished yet
 	
-	public String ImplementMethod(LinkedList data) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, IllegalArgumentException{
-		int Returned;
-		String temp = "";
-		String MethodName = "";
-		String[] ListTypes = new String[data.size()];
-		String[] DataArray = new String[data.size()];
-		LinkedList temp1 = new LinkedList();
-		int i;
-		int j = data.size();
-		while(0 < j){
-			temp1.add(data.removeLast());
-			j--;
-		}
-		data = temp1;
-		
-		for (i = 0; i < data.size(); i++) {
-		   DataArray[i] = (String) data.get(i);
-		}
-		TreeMap<String, Class> TM = new TreeMap<String, Class>();
-		i = 0;
-		j = ListTypes.length;
-		while(i <j){
-			temp =  WordType(DataArray[i]);
-			if(temp == "String.class"){
-				DataArray[i] = (String) DataArray[i].replace("\"", "");
-			}
-			ListTypes[i] = temp;
-			i++;
-		}
-		if(ListTypes[0] == "FUNCTION")
-			MethodName = DataArray[0];
-		//Creates a map to put the proper class into the getMethod in the try
-		Class Alpha = int.class;
-		Class Betta = String.class;
-		Class Theta = float.class;
-		Class TEMP;
-		i = 1;
-		j = ListTypes.length - 1;
-		String MapIndex = "P";
-		
-		//Determine which class to place in each map location
-		while(i <= j){
-			temp = MapIndex + i;
-			if(ListTypes[i] == "int.class"){
-				TM.put(temp, Alpha);
-			}
-			else if(ListTypes[i] == "String.class"){
-				TM.put(temp, Betta);
-			}
-			else if(ListTypes[i] == "float.class"){
-				TM.put(temp,Theta);
-			}
-			i++;
-		}
-		LinkedList Parameters = ParameterLister(DataArray, TM);
-		try{
-			return Feeder(Parameters, TM, data.size(), DataArray, MethodName);		
-		}
-			finally{
-				//Fill
-			}
-}
-	
-//============================================================================	
-//////////////////////////////////////////////////////////////////////////////
-//																			//
-//							ParameterLister									//
-//																			//
-//////////////////////////////////////////////////////////////////////////////
-//============================================================================
-//Takes the parameters provided and their types then returns a linked list of
-//objects which are the appropriate types.
-	private LinkedList ParameterLister(String [] Parameters, TreeMap<String, Class> TM){
-		LinkedList LL = new LinkedList();
-		int i = 1;
-		int j = Parameters.length - 1;
-		String temp = "";
-		String MapIndex = "P";
-		while(i <= j){
-			temp = MapIndex + i;
-			if(TM.get(temp) == int.class){
-				LL.add(Integer.parseInt(Parameters[i]));
-			}
-			else if(TM.get(temp) == float.class){
-				LL.add(Float.parseFloat(Parameters[i]));
-			}
-			else 
-				LL.add(Parameters[i]);
-			i++;
-		}
-		return(LL);
-	}
-	
-//============================================================================	
-//////////////////////////////////////////////////////////////////////////////
-//																			//
-//									Feeder									//
-//																			//
-//////////////////////////////////////////////////////////////////////////////
-//============================================================================
-//This method takes in the number of arguments from the implementer and then
-//calls the method with that many arguments.  Currently handles up to three 
-//parameter inputs.
-	private String Feeder(LinkedList Parameters, TreeMap<String, Class>  TM, int paramaterNum, String[] parameters, String MethodName)throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, IllegalArgumentException{
-		Method method = null;
+	private Object executeMethod(String function, ArrayList<Object> parameters) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, IllegalArgumentException {
+		Method method;
 		Class RT = null;
-		Object returnValue = null;
-		if (paramaterNum == 1){
-			method = ClassName.getMethod(MethodName);
-			RT = method.getReturnType();
-			returnValue = (method.invoke(instance));
-		}
-		else if(paramaterNum == 2){
-			method = ClassName.getMethod(MethodName, TM.get("P1"));
-			RT = method.getReturnType();
-			returnValue = method.invoke(instance, Parameters.get(0));
-		}
-		else if(paramaterNum == 3){
-			method = ClassName.getMethod(MethodName, TM.get("P1"), TM.get("P2"));
-			RT = method.getReturnType();
-			returnValue = (method.invoke(instance, Parameters.get(0), Parameters.get(1)));
-		}
-		else if(paramaterNum == 4){
-			method = ClassName.getMethod(MethodName, TM.get("P1"), TM.get("P2"), TM.get("P3"));
-			RT = method.getReturnType();
-			returnValue = (method.invoke(instance, Parameters.get(0), Parameters.get(1), Parameters.get(2)));
+		Object returnValue;
+		Class[] parameterTypes = new Class[parameters.size()];
+		
+		int i = 0;
+		int j = parameters.size();
+		while (i < j){
+			parameterTypes[i] = parameters.get(i).getClass();
+			i++;
 		}
 		
-		//Determines the return type
+		
+		method = ClassName.getMethod(function, parameterTypes);
+		RT = method.getReturnType();
+		
+		returnValue = (method.invoke(instance, parameters));
+		
+		
+		
+		
 		
 		if(RT == int.class){
 			return(Integer.toString((int)returnValue));
