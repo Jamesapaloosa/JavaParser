@@ -219,14 +219,4 @@ public class ParseTree {
 
     }
 
-    public static void main(String[] args) {
-        //ParseTree t = new ParseTree("(add 100 (div 9 3 2) 5 (mul 4 5))");
-        //ParseTree t = new ParseTree("(add 100 3.6 (mul 10 (len \"Hello world!\")))");
-        ParseTree t = new ParseTree("(add 5 (test 6 9 2.8 (_8most_)))");
-        //ParseTree t = new ParseTree("\"asdf\" 4 5 2");
-        // TODO: THE ABOVE NEEDS TO FAIL!
-        // TODO: MISMATCHED QUOTE CHARACTERS NEED TO FAIL!
-        String test = t.getEvaluation().toString();
-    }
-
 }
