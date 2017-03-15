@@ -116,61 +116,11 @@ public class Parser {
 		    System.out.println("");
 		}
 	}
-//============================================================================
-//////////////////////////////////////////////////////////////////////////////
-//																			//
-//							ParseExpression									//
-//																			//
-//////////////////////////////////////////////////////////////////////////////
-//============================================================================
-
 	
-//============================================================================
-//////////////////////////////////////////////////////////////////////////////
-//																			//
-//							Implement Method								//
-//																			//
-//////////////////////////////////////////////////////////////////////////////
-//============================================================================
-	
-	private Object executeMethod(String function, ArrayList<Object> parameters) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, IllegalArgumentException {
-		Method method;
-		Class RT = null;
-		Object returnValue;
-		Class[] parameterTypes = new Class[parameters.size()];
-		
-		int i = 0;
-		int j = parameters.size();
-		while (i < j){
-			parameterTypes[i] = parameters.get(i).getClass();
-			i++;
-		}
-		
-		
-		method = ClassName.getMethod(function, parameterTypes);
-		RT = method.getReturnType();
-		
-		returnValue = (method.invoke(instance, parameters));
-		
-		
-		
-		
-		
-		if(RT == int.class){
-			return(Integer.toString((int)returnValue));
-		}
-		else if(RT == String.class){
-			String temp = (String) returnValue;
-			temp = '"' + temp + '"'; 
-			return((String) returnValue);
-		}
-		else if (RT == float.class){
-			return(Float.toString((float) returnValue));
-		}
-		else{
-			return null;
-		}
-	}
+public void ParseExpression(String string) {
+    ParseTree t = new ParseTree(string, ClassName, instance);
+    System.out.println(t.getEvaluation().toString());
+}
 
 //============================================================================	
 //////////////////////////////////////////////////////////////////////////////
