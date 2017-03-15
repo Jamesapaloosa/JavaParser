@@ -63,7 +63,7 @@ public class Methods
 		else
 		{
 			System.out.println("else");
-			Verbose = cp.ParseProgramInput1(args, Verbose);
+			Verbose = cp.ParseProgramInput(args, Verbose);
 			
 			try
 			{
