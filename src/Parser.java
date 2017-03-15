@@ -4,30 +4,7 @@
 	//
 	//
 	//
-	//Version March 8.12.49
-	//
-
-	// TO IMPLEMENT:
-	// public [returnType: Object? I dunno] executeMethod(String function, ArrayList<Object> parameters) throws blah blah blah
-	// parameters should be ArrayList<Object> and not ArrayList<Node>, since Object is working nicer
-
-	//Current Bugs
-
-
-	//-Does not recognize string inputs yet
-	//-Does not yet deal with nested expressions 
-	//-Inputs for actual method calls are hard coded
-	//-Verbose not implemented
-	//-May not yet be in parse tree from
-	
-
-	//Current Functionality
-
-	//-Prints methods from desired function
-	//-Can recognize an instantiated function that is fed in from main
-	//-Knows all return types, constructors, parameterTypes, methods and fields
-	//-Points to error points in expressions
-	//-Handles a single expression of up to three inputs in length
+	//Version March 15, 13:18
 
 
 import java.lang.reflect.*;
