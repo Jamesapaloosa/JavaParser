@@ -11,8 +11,12 @@ public class ParseTree {
     public String input;
     public Node root;
     private ArrayList<MatchResult> matches;
+	private Object instance = null;
+	private Class<?> ClassName;
 
-    public ParseTree(String input) {
+    public ParseTree(String input, 	Class<?> ClassName, Object instance) {
+    	this.instance = instance;
+    	this.ClassName = ClassName;
         this.input = input;
         tokenize();
         constructTree();
@@ -36,6 +40,62 @@ public class ParseTree {
 //        }
 //    }
 
+        private Object evaluate(Node n) {
+        if (n.children.isEmpty()) {
+            if (n.isValue) {
+                return n.value;
+            } else {
+            	try{
+                return executeMethod((String) n.value, (ArrayList<Object>) n.children.stream().map(c -> c.value).collect(Collectors.toList()));
+            	}catch(Throwable e){
+            		return null;
+            	}
+            }
+        } else {
+        	try{
+            return executeMethod((String) n.value, (ArrayList<Object>) n.children.stream().map(this::evaluate).collect(Collectors.toList()));
+        	}catch(Throwable e){
+        		return null;
+        	}
+        }
+    }
+    
+	private Object executeMethod(String function, ArrayList<Object> parameters) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, IllegalArgumentException {
+		Method method;
+		Class RT = null;
+		Object returnValue;
+		Class[] parameterTypes = new Class[parameters.size()];
+		
+		int i = 0;
+		int j = parameters.size();
+		while (i < j){
+			parameterTypes[i] = parameters.get(i).getClass();
+			i++;
+		}
+		
+		
+		method = ClassName.getMethod(function, parameterTypes);
+		RT = method.getReturnType();
+		
+		returnValue = (method.invoke(instance, parameters));
+		
+		
+		if(RT == int.class){
+			return(Integer.toString((int)returnValue));
+		}
+		else if(RT == String.class){
+			String temp = (String) returnValue;
+			temp = '"' + temp + '"'; 
+			return((String) returnValue);
+		}
+		else if (RT == float.class){
+			return(Float.toString((float) returnValue));
+		}
+		else{
+			return null;
+		}
+	}
+    /*
     private Object evaluate(Node n) {
         if (n.children.isEmpty()) {
             if (n.isValue) {
@@ -56,7 +116,7 @@ public class ParseTree {
         }
         result += ")";
         return result;
-    }
+    }*/
 
     private void tokenize() {
         Pattern p = Pattern.compile("\".*\"|([\\S&&[^()]]+)|([()])");
