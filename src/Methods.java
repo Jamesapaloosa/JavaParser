@@ -34,6 +34,32 @@ public class Methods
 			System.out.println("len 1");
 			Verbose = cp.ParseProgramInput1(args, Verbose);
 		}
+		else if(args.length == 2)
+		{
+			System.out.println("len 2");
+			//Verbose = cp.ParseProgramInput2(args, Verbose);
+			try
+			{
+				String[] jarString = args[0].split("\\.");
+				//set jar name here. if not found, catch
+			}
+			catch(Exception e)
+			{
+				System.out.println("Could not find jar: " + args[0]);
+			}
+			try
+			{
+				functionClassName = args[1];
+				P = new Parser(functionClassName);
+			}
+			catch(Exception e)
+			{
+				System.out.println("Could not find class: " + functionClassName);
+				P = new Parser();
+			}
+
+			mainLoop();
+		}
 		else
 		{
 			System.out.println("else");
