@@ -36,7 +36,7 @@ public class Interface {
 	}
 	
 	public void PrintBye(){
-		System.out.print("bye.");
+		System.out.println("bye.");
 	}
 	
 	public void PrintStack(boolean V){
