@@ -21,6 +21,7 @@ public class Methods
 
 		ConsoleParse cp = new ConsoleParse();
 		
+		String jarString = "";
 		String functionClassName = "";
 		
 		//Parse over input
@@ -40,22 +41,22 @@ public class Methods
 			//Verbose = cp.ParseProgramInput2(args, Verbose);
 			try
 			{
-				String[] jarString = args[0].split("\\.");
-				//set jar name here. if not found, catch
-			}
-			catch(Exception e)
-			{
-				System.out.println("Could not find jar: " + args[0]);
-			}
-			try
-			{
+				jarString = args[0];
 				functionClassName = args[1];
-				P = new Parser(functionClassName);
+				P = new Parser(jarString, functionClassName);
 			}
-			catch(Exception e)
+			catch(ClassNotFoundException e)
 			{
+				System.out.println("e100");
 				System.out.println("Could not find class: " + functionClassName);
 				P = new Parser();
+				System.exit(0);
+			}
+			catch(Exception f)
+			{
+				System.out.println("e200");
+				// System.out.println("Could not find jar: " + jarString);
+				// System.exit(0);
 			}
 
 			mainLoop();
@@ -67,22 +68,15 @@ public class Methods
 			
 			try
 			{
-				String[] jarString = args[1].split("\\.");
-				//set jar name here. if not found, catch
-			}
-			catch(Exception e)
-			{
-				System.out.println("Could not find jar: " + args[1]);
-			}
-			try
-			{
+				jarString = args[1];
 				functionClassName = args[2];
-				P = new Parser(functionClassName);
+				P = new Parser(jarString, functionClassName);
 			}
 			catch(Exception e)
 			{
-				System.out.println("Could not find class: " + functionClassName);
+				System.out.println("asdasdasd");
 				P = new Parser();
+				System.exit(0);
 			}
 			
 			mainLoop();
@@ -132,3 +126,6 @@ public class Methods
 	}
 	
 }
+
+		
+
