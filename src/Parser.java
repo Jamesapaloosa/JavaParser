@@ -135,9 +135,14 @@ public class Parser {
 	}
 	
 public void ParseExpression(String string) {
+	try{
     ParseTree t = new ParseTree(string, ClassName, instance, verbose);
     System.out.println(t.getEvaluation().toString());
+	}catch(NullPointerException e){
+		System.out.println("null was printed");
+	}
 }
+
 
 //============================================================================	
 //////////////////////////////////////////////////////////////////////////////
