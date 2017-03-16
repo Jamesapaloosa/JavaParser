@@ -20,7 +20,6 @@ public class ConsoleParse
 		int j2 = input[0].length();
 		boolean noError = true;	
 		boolean runH = false;
-		boolean runV = false;
 				
 		if(input[0].charAt(0) == '-')
 		{
@@ -32,16 +31,8 @@ public class ConsoleParse
 				}
 				else if(input[0].compareToIgnoreCase("--verbose") == 0)
 				{
-					if(Verbose == false)
-					{
-						Verbose = true;
-						MainI.PrintVerboseOn();
-					}
-					else
-					{
-						MainI.PrintVerboseOff();
-						Verbose = false;
-					}
+					System.out.println("This program requires a jar file as the first command line argument (after any qualifiers)");
+					System.exit(-3);
 				}
 				else
 				{
@@ -66,7 +57,8 @@ public class ConsoleParse
 					}
 					else if(x == 'v')
 					{
-						runV = true;
+						System.out.println("This program requires a jar file as the first command line argument (after any qualifiers)");
+						System.exit(-3);
 					}
 					else 
 					{
@@ -86,22 +78,14 @@ public class ConsoleParse
 				{
 					MainI.PrintSyn();
 				}	
-				if(runV == true)
-				{
-					if(Verbose == false)
-					{
-						Verbose = true;
-						MainI.PrintVerboseOn();
-					}
-					else
-					{
-						MainI.PrintVerboseOff();
-						Verbose = false;
-					}
-					
-				}
 			}
 
+		}
+		else
+		{
+			System.out.println("Unrecognized qualifier '" + input[0] +"' ");
+			MainI.PrintSyn2();
+			System.exit(-1);
 		}
 		return(Verbose);
 	}
@@ -116,7 +100,6 @@ public class ConsoleParse
 		int j1 = input[0].length();
 		int j2 = input[0].length();
 		boolean noError = true;	
-		boolean runH = false;
 		boolean runV = false;
 				
 		if(input[0].charAt(0) == '-')
@@ -158,11 +141,13 @@ public class ConsoleParse
 					if(x == 'h')
 					{
 						System.out.println("Qualifier --help (-h, -?) should not appear with any command-line arguments.");
+						MainI.PrintSyn2();
 						System.exit(-4);
 					}
 					else if(x == '?') 
 					{
 						System.out.println("Qualifier --help (-h, -?) should not appear with any command-line arguments.");
+						MainI.PrintSyn2();
 						System.exit(-4);
 					}
 					else if(x == 'v')
@@ -198,6 +183,12 @@ public class ConsoleParse
 				}
 			}
 
+		}
+		else
+		{
+			System.out.println("Unrecognized qualifier '" + input[0] +"' ");
+			MainI.PrintSyn2();
+			System.exit(-1);
 		}
 		return(Verbose);
 	}
