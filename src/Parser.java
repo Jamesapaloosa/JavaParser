@@ -40,8 +40,9 @@ public class Parser {
 	public Parser(String JarN, String ClassN)throws ClassNotFoundException{
 		Path currentRelativePath = Paths.get("");
 		String pathway = currentRelativePath.toAbsolutePath().toString();
-		pathway = pathway + "\\"+JarN;
-	
+		//CHANGE THIS LINE FOR WINDOWS("\\") AND LINUX ("/")
+		pathway = pathway + "\\"+JarN; 
+		//*****
 		try {
 			File file = new File(pathway);
 			if(!file.exists())
