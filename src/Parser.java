@@ -120,7 +120,29 @@ public void ParseExpression(String string) {
 			output = input;
 		return(output);
 	}
-	
+//============================================================================	
+//////////////////////////////////////////////////////////////////////////////
+//																			//
+//							GetTypeString									//
+//																			//
+//////////////////////////////////////////////////////////////////////////////
+//============================================================================
+//Takes in a string and returns its type.
+//takes in "java.lang.string" and returns "String"
+	private String GetTypeString(String input){
+		String [] temp = input.split(" ");
+		String output = "";
+		
+		if(temp.length > 1){
+			output = temp[1];
+			temp = output.split("\\.");
+			output = temp[temp.length - 1];
+		}
+		else{
+			output = input;
+		}
+		return output;
+	}
 //============================================================================	
 //////////////////////////////////////////////////////////////////////////////
 //																			//
