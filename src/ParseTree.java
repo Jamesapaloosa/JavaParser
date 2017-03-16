@@ -15,8 +15,10 @@ public class ParseTree {
     private ArrayList<MatchResult> matches;
 	private Object instance = null;
 	private Class<?> ClassName;
+	private boolean verbose = false;
 
-    public ParseTree(String input, 	Class<?> ClassName, Object instance) {
+    public ParseTree(String input, 	Class<?> ClassName, Object instance, boolean V) {
+    	verbose = V;
     	this.instance = instance;
     	this.ClassName = ClassName;
         this.input = input;
@@ -29,20 +31,8 @@ public class ParseTree {
         return evaluate(root);
     }
 
-//    private String evaluate(Node n) {
-//        if (n.children.isEmpty()) {
-//            return "(" + n.value + ")";
-//        } else {
-//            String result = "(" + n.value + " ";
-//            for (Node c : n.children) {
-//                result += evaluate(c);
-//            }
-//            result += ")";
-//            return result;
-//        }
-//    }
 
-        private Object evaluate(Node n) {
+    private Object evaluate(Node n) {
         if (n.children.isEmpty()) {
             if (n.isValue) {
                 return n.value;
@@ -50,17 +40,28 @@ public class ParseTree {
             	try{
                 return executeMethod((String) n.value, (ArrayList<Object>) n.children.stream().map(c -> c.value).collect(Collectors.toList()));
             	}catch(Throwable e){
+            		ErrorArrows(n.start, (String) n.value, (ArrayList<Object>) n.children.stream().map(this::evaluate).collect(Collectors.toList()), e);
+            		System.out.println("Method not found here?");
             		return null;
             	}
             }
         } else {
         	try{
             return executeMethod((String) n.value, (ArrayList<Object>) n.children.stream().map(this::evaluate).collect(Collectors.toList()));
-        	}catch(Throwable e){
+        	}catch(NoSuchMethodException f){
+        		ErrorArrows(n.start, (String) n.value, (ArrayList<Object>) n.children.stream().map(this::evaluate).collect(Collectors.toList()), f);
+        		return null;
+        	}catch(IllegalArgumentException d){
+        		ErrorArrows(n.start, (String) n.value, (ArrayList<Object>) n.children.stream().map(this::evaluate).collect(Collectors.toList()), d);
+        		return null;
+        	}
+        	catch(Throwable e){
+        		ErrorArrows(n.start, (String) n.value, (ArrayList<Object>) n.children.stream().map(this::evaluate).collect(Collectors.toList()), e);
         		return null;
         	}
         }
     }
+    
     
 //Execute Method ================================================
 	private Object executeMethod(String function, ArrayList<Object> parameters) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, IllegalArgumentException {
@@ -100,29 +101,8 @@ public class ParseTree {
 		return(method.invoke(instance, parameters));
 	}
 //===================================================================
-    /*
-    private Object evaluate(Node n) {
-        if (n.children.isEmpty()) {
-            if (n.isValue) {
-                return n.value;
-            } else {
-                return executeMethod((String) n.value, (ArrayList<Object>) n.children.stream().map(c -> c.value).collect(Collectors.toList()));
-            }
-        } else {
-            return executeMethod((String) n.value, (ArrayList<Object>) n.children.stream().map(this::evaluate).collect(Collectors.toList()));
-        }
-    }
-
-    //This function should not be in this file, and is only for temporary testing!
-    private Object executeMethod(String function, ArrayList<Object> parameters) {
-        String result = "("+function+(parameters.isEmpty() ? "" : "ExecutedWithArgs");
-        for (Object p : parameters) {
-            result += p.toString();
-        }
-        result += ")";
-        return result;
-    }*/
-
+	
+	
     private void tokenize() {
         Pattern p = Pattern.compile("\".*\"|([\\S&&[^()]]+)|([()])");
         Matcher m = p.matcher(input);
@@ -216,6 +196,7 @@ public class ParseTree {
 
         public void validate() {
             if (!isValue && (start - 1 < 0 || input.charAt(start - 1) != '(')) {
+            	
                 System.out.println("Error at: " + start);
             } else if (!isValue && ((String) value).matches("(\\W)|(\\b[0-9].*\\b)")) {
                 System.out.println("Error at: " + start);
@@ -223,5 +204,47 @@ public class ParseTree {
         }
 
     }
+  //============================================================================
+//////////////////////////////////////////////////////////////////////////////
+//	//
+//ErrorArrows									//
+//	//
+//////////////////////////////////////////////////////////////////////////////
+//============================================================================
+//Displays the arrows and needed error message to be printed
+private void ErrorArrows(int counter, String Function, ArrayList<Object> Parameters, Throwable e){
+	Class[] parameterTypes = new Class[Parameters.size()];
+	int i = 0;
+	Class<?> temp;
+	int j = Parameters.size();
+	while (i < j){
+		temp = Parameters.get(i).getClass();
+		if(temp.toString().equals("class java.lang.Integer")){
+			parameterTypes[i] = int.class;
+		}
+		else if(temp.toString().equals("class java.lang.Float")){
+			parameterTypes[i] = float.class;
+		}
+		else{
+			parameterTypes[i] = String.class;
+		}
+		i++;
+	}
+		String expression = "(" + Function +" ";
+		for(Class C: parameterTypes){
+				expression = expression + " " + C;
+		}
+		System.out.println("Matching function for '" + expression + ")' not found at offset " + (counter));
+		System.out.println(input);
+		int d = 0;
+		while(d < counter){
+				System.out.print("-");
+				d++;
+		}
+		System.out.println("^");
+		if(verbose == true){
+				e.printStackTrace();
+		}
+	}
 
 }
