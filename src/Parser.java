@@ -103,7 +103,11 @@ public class Parser {
 	//Simple method that can print all the fields in a method
 	public void PrintFields(){
 		for(Field field : fields){
+			try{
 			System.out.println("Field = " + field.getName());
+			}catch(NullPointerException e){
+				System.out.println("Null was printed");
+			}
 		}
 	}
 //============================================================================
