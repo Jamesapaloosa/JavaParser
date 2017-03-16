@@ -110,7 +110,7 @@ public class Methods
 					{
 						Verbose = true;
 						MainI.PrintVerboseOn();
-						P.SetVerbose(True);
+						P.SetVerbose(true);
 					}
 					else
 					{
