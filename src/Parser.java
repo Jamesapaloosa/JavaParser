@@ -234,4 +234,11 @@ public void ParseExpression(String string) {
 			System.out.println("Invalid parameters for this function");
 		}
 	}
+	
+	public void SetVerbose(boolean T){
+		verbose = T;
+	}
+	
+	
+	
 }
