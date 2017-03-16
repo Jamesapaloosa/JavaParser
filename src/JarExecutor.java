@@ -10,6 +10,7 @@ import java.net.URLClassLoader;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 public class JarExecutor {
 
@@ -74,30 +75,30 @@ public class JarExecutor {
         }
     }
 
-//    public Object executeMethod(String function, ArrayList<Object> parameters) {
-//        Method method;
-//        Class[] parameterTypes = new Class[parameters.size()];
-//        int i = 0;
-//        Class<?> temp;
-//        int j = parameters.size();
-//        while (i < j){
-//            temp = parameters.get(i).getClass();
-//            if(temp.toString().equals("class java.lang.Integer")){
-//                parameterTypes[i] = int.class;
-//                parameters.set(i, ((int) parameters.get(i)));
-//                //System.out.println(((Integer) parameters.get(i)).intValue());
-//            }
-//            else if(temp.toString().equals("class java.lang.Float")){
-//                parameterTypes[i] = float.class;
-//                parameters.set(i, (float) parameters.get(i));
-//            }
-//            else{
-//                parameterTypes[i] = String.class;
-//                parameters.set(i, (String)parameters.get(i));
-//            }
-//            i++;
-//        }
-//
+    public Object executeMethod(String function, ArrayList<Object> parameters) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, IllegalArgumentException {
+        Method method;
+        Class[] parameterTypes = new Class[parameters.size()];
+        int i = 0;
+        Class<?> temp;
+        int j = parameters.size();
+        while (i < j){
+            temp = parameters.get(i).getClass();
+            if(temp.toString().equals("class java.lang.Integer")){
+                parameterTypes[i] = int.class;
+                parameters.set(i, ((int) parameters.get(i)));
+                //System.out.println(((Integer) parameters.get(i)).intValue());
+            }
+            else if(temp.toString().equals("class java.lang.Float")){
+                parameterTypes[i] = float.class;
+                parameters.set(i, (float) parameters.get(i));
+            }
+            else{
+                parameterTypes[i] = String.class;
+                parameters.set(i, (String)parameters.get(i));
+            }
+            i++;
+        }
+
 //        for(Object o: parameters){
 //            System.out.println(o.getClass());
 //            System.out.println(o);
@@ -106,9 +107,66 @@ public class JarExecutor {
 //        for(Class o: parameterTypes){
 //            System.out.println(o);
 //        }
-//
-//        method = className.getMethod(function, parameterTypes);
-//        return method.invoke(instance, parameters);
-//    }
+
+        Class[] ptypes = (Class[]) parameters.stream().map(this::toPrimitiveClass).toArray(size -> new Class[size]);
+
+//        for (int k = 0; k < ptypes.length; k++) {
+//            System.out.println(ptypes[k]);
+//        }
+
+        try {
+            method = cls.getMethod(function, ptypes);
+            return method.invoke(instance, parameters.toArray());
+        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException | IllegalArgumentException e) {
+            throw new NoSuchMethodException(expressionString(function, parameters));
+        }
+    }
+
+    private Class toPrimitiveClass(Object o) {
+        if (o instanceof Integer) {
+            return int.class;
+        } else if (o instanceof Float) {
+            return float.class;
+        } else {
+            return o.getClass();
+        }
+    }
+
+    private String expressionString(String function, ArrayList<Object> parameters){
+        Class[] parameterTypes = new Class[parameters.size()];
+        int i = 0;
+        Class<?> temp;
+        int j = parameters.size();
+        while (i < j){
+            temp = parameters.get(i).getClass();
+            if(temp.toString().equals("class java.lang.Integer")){
+                parameterTypes[i] = int.class;
+            }
+            else if(temp.toString().equals("class java.lang.Float")){
+                parameterTypes[i] = float.class;
+            }
+            else{
+                parameterTypes[i] = String.class;
+            }
+            i++;
+        }
+		String expression = "(" + function + " ";
+		for(Class C: parameterTypes){
+				expression = expression + " " + C;
+		}
+        expression += ")";
+        return expression;
+//		System.out.println("Matching function for '" + expression + ")' not found at offset " + (counter));
+//		System.out.println(input);
+//		int d = 0;
+//		while(d < counter){
+//				System.out.print("-");
+//				d++;
+//		}
+//		System.out.println("^");
+//		if(verbose == true){
+//				e.printStackTrace();
+//		}
+	}
 
 }

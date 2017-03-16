@@ -17,7 +17,7 @@ public class ParseTree {
     private ArrayList<MatchResult> matches;
     private JarExecutor jarExec;
 
-    public ParseTree(String input, JarExecutor jarExec) {
+    public ParseTree(String input, JarExecutor jarExec) throws ParseException {
         this.input = input;
     	this.jarExec = jarExec;
         tokenize();
@@ -25,58 +25,40 @@ public class ParseTree {
         validate(root);
     }
 
-//    public void getEvaluation() {
-//        try {
-//            Object result = evaluate(root);
-//        } catch (ParseException e) {
-//            System.out.printf(e.getMessage());
-//        }
-//    }
-//
-//    private Object evaluate(Node n) {
-//        if (n.children.isEmpty()) {
-//            if (n.isValue) {
-//                return n.value;
-//            } else {
-//                return jarExec.executeMethod((String) n.value, (ArrayList<Object>) n.children.stream().map(c -> c.value).collect(Collectors.toList()));
-//            }
-//        } else {
-//            return jarExec.executeMethod((String) n.value, (ArrayList<Object>) n.children.stream().map(this::evaluate).collect(Collectors.toList()));
-//        }
-//    }
-
-//    private Object evaluate(Node n) throws ParseException {
-////        if (n.children.isEmpty()) {
-////            if (n.isValue) {
-////                return n.value;
-////            } else {
-////                return jarExec.executeMethod((String) n.value, (ArrayList<Object>) n.children.stream().map(c -> c.value).collect(Collectors.toList()));
-////            }
-////        } else {
-//            return jarExec.executeMethod((String) n.value, (ArrayList<Object>) n.children.stream().map(this::evaluate).collect(Collectors.toList()));
-//        //}
-//    }
-
-    //This function should not be in this file, and is only for temporary testing!
-    private Object executeMethod(String function, ArrayList<Object> parameters) {
-        String result = "("+function+(parameters.isEmpty() ? "" : "ExecutedWithArgs");
-        for (Object p : parameters) {
-            result += p.toString();
-        }
-        result += ")";
-        return result;
-    }
-
-    private Class toPrimitiveClass(Object o) {
-        if (o instanceof Integer) {
-            return int.class;
-        } else if (o instanceof Float) {
-            return float.class;
-        } else {
-            return o.getClass();
+    public void getEvaluation() {
+        try {
+            Object result = evaluate(root);
+            System.out.println(result);
+        } catch (ParseException e) {
+            e.printErrorMessage();
         }
     }
-	
+
+    private Object evaluate(Node n) throws ParseException {
+        try {
+            if (n.children.isEmpty()) {
+                if (n.isValue) {
+                    return n.value;
+                } else {
+                    return jarExec.executeMethod((String) n.value, (ArrayList<Object>) n.children.stream().map(c -> c.value).collect(Collectors.toList()));
+                }
+            } else {
+                return jarExec.executeMethod((String) n.value, (ArrayList<Object>) n.children.stream().map(this::evaluate).collect(Collectors.toList()));
+            }
+        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException | IllegalArgumentException e) {
+            throw new ParseException(e.getMessage(), n, input);
+        }
+    }
+
+//    //This function should not be in this file, and is only for temporary testing!
+//    private Object executeMethod(String function, ArrayList<Object> parameters) {
+//        String result = "("+function+(parameters.isEmpty() ? "" : "ExecutedWithArgs");
+//        for (Object p : parameters) {
+//            result += p.toString();
+//        }
+//        result += ")";
+//        return result;
+//    }
 	
     private void tokenize() {
         Pattern p = Pattern.compile("\".*\"|([\\S&&[^()]]+)|([()])");
@@ -87,7 +69,7 @@ public class ParseTree {
         }
     }
 
-    private void constructTree() {
+    private void constructTree() throws ParseException {
         Stack<Node> stack = new Stack<>();
         Node t, t1, t2;
         for (MatchResult m : matches) {
@@ -113,7 +95,8 @@ public class ParseTree {
         stack.pop();
         root = t;
         if (!stack.isEmpty()) {
-            System.out.println("Bracket mismatch error at: " + (input.length() - 1));
+            //System.out.println("Bracket mismatch error at: " + (input.length() - 1));
+            throw new ParseException("Encountered end-of-input while reading string beginning at offset 0 at offset " + input.length(), input);
         }
         parse(root);
     }
@@ -134,6 +117,20 @@ public class ParseTree {
             validate(c);
         }
     }
+
+//    private void printErrorMessage(ParseException e){
+//		System.out.println(e.getMessage());
+//		System.out.println(input);
+//		int d = 0;
+//		while(d < e.node.start){
+//				System.out.print("-");
+//				d++;
+//		}
+//		System.out.println("^");
+////		if(verbose == true){
+////				e.printStackTrace();
+////		}
+//    }
 
     public class Node {
 
