@@ -42,7 +42,7 @@ public class Methods
 			{
 				jarString = args[0];
 				functionClassName = args[1];
-				P = new Parser(jarString, functionClassName);
+				P = new Parser(jarString, functionClassName, Verbose);
 			}
 			catch(ClassNotFoundException e)
 			{
@@ -73,7 +73,7 @@ public class Methods
 					System.exit(-3);
 				}
 				functionClassName = args[2];
-				P = new Parser(jarString, functionClassName);
+				P = new Parser(jarString, functionClassName, Verbose);
 			}
 			catch(Exception e)
 			{
