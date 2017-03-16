@@ -41,8 +41,9 @@ public class Parser {
 		SetVerbose(T);
 		Path currentRelativePath = Paths.get("");
 		String pathway = currentRelativePath.toAbsolutePath().toString();
+		//*****Change this for Linux("/") or Windows("\\")
 		pathway = pathway + "\\"+JarN;
-	
+		//*****
 		try {
 			File file = new File(pathway);
 			if(!file.exists())
