@@ -62,41 +62,44 @@ public class ParseTree {
         }
     }
     
+//Execute Method ================================================
 	private Object executeMethod(String function, ArrayList<Object> parameters) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, IllegalArgumentException {
 		Method method;
-		Class RT = null;
-		Object returnValue;
 		Class[] parameterTypes = new Class[parameters.size()];
-		
 		int i = 0;
+		Class<?> temp;
 		int j = parameters.size();
 		while (i < j){
-			parameterTypes[i] = parameters.get(i).getClass();
+			temp = parameters.get(i).getClass();
+			if(temp.toString().equals("class java.lang.Integer")){
+				parameterTypes[i] = int.class;
+				parameters.set(i, ((int) parameters.get(i)));
+				//System.out.println(((Integer) parameters.get(i)).intValue()); 
+			}
+			else if(temp.toString().equals("class java.lang.Float")){
+				parameterTypes[i] = float.class;
+				parameters.set(i, (float) parameters.get(i));
+			}
+			else{
+				parameterTypes[i] = String.class;
+				parameters.set(i, (String)parameters.get(i));
+			}
 			i++;
 		}
+
+		for(Object o: parameters){
+			System.out.println(o.getClass());
+			System.out.println(o);
+		}
 		
+		for(Class o: parameterTypes){
+			System.out.println(o);
+		}
 		
 		method = ClassName.getMethod(function, parameterTypes);
-		RT = method.getReturnType();
-		
-		returnValue = (method.invoke(instance, parameters));
-		
-		
-		if(RT == int.class){
-			return(Integer.toString((int)returnValue));
-		}
-		else if(RT == String.class){
-			String temp = (String) returnValue;
-			temp = '"' + temp + '"'; 
-			return((String) returnValue);
-		}
-		else if (RT == float.class){
-			return(Float.toString((float) returnValue));
-		}
-		else{
-			return null;
-		}
+		return(method.invoke(instance, parameters));
 	}
+//===================================================================
     /*
     private Object evaluate(Node n) {
         if (n.children.isEmpty()) {
