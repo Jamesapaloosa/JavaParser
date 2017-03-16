@@ -134,7 +134,7 @@ public class Parser {
 	}
 	
 public void ParseExpression(String string) {
-    ParseTree t = new ParseTree(string, ClassName, instance);
+    ParseTree t = new ParseTree(string, ClassName, instance, verbose);
     System.out.println(t.getEvaluation().toString());
 }
 
