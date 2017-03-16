@@ -110,11 +110,13 @@ public class Methods
 					{
 						Verbose = true;
 						MainI.PrintVerboseOn();
+						P.SetVerbose(True);
 					}
 					else
 					{
 						MainI.PrintVerboseOff();
 						Verbose = false;
+						P.SetVerbose(false);
 					}
 					break;
 
