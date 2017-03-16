@@ -27,17 +27,14 @@ public class Methods
 		//Parse over input
 		if(args.length == 0)
 		{
-			System.out.println("len 0");
 			Verbose = cp.ParseProgramInput0(args, Verbose);
 		}
 		else if(args.length == 1)
 		{
-			System.out.println("len 1");
 			Verbose = cp.ParseProgramInput1(args, Verbose);
 		}
 		else if(args.length == 2)
 		{
-			System.out.println("len 2");
 			try
 			{
 				jarString = args[0];
@@ -52,42 +49,31 @@ public class Methods
 			}
 			catch(Exception f)
 			{
+				// System.out.println("Could not find jar: " + jarString);
+				// System.exit(0);
 			}
 
 			mainLoop();
 		}
-		else if(args.length == 3)
+		else
 		{
 			System.out.println("else");
 			Verbose = cp.ParseProgramInput(args, Verbose);
 			
 			try
 			{
-				if(args[1].endsWith(".jar"))
-				{
-					jarString = args[1];
-				}
-				else
-				{
-					System.out.println("This program requires a jar file as the first command line argument (after any qualifiers)");
-					System.exit(-3);
-				}
+				jarString = args[1];
 				functionClassName = args[2];
 				P = new Parser(jarString, functionClassName);
 			}
 			catch(Exception e)
 			{
-				System.out.println("asdasdasd");
 				P = new Parser();
 				System.exit(0);
 			}
 			
 			mainLoop();
-		}
-		else
-		{
-			System.out.println("This program takes at most two command line arguments");
-			System.exit(-2);
+			
 		}
 			
 	}
@@ -110,11 +96,13 @@ public class Methods
 					{
 						Verbose = true;
 						MainI.PrintVerboseOn();
+						P.SetVerbose(true);
 					}
 					else
 					{
 						MainI.PrintVerboseOff();
 						Verbose = false;
+						P.SetVerbose(false);
 					}
 					break;
 
@@ -131,6 +119,5 @@ public class Methods
 			}
 		}
 	}
-
+	
 }
-
