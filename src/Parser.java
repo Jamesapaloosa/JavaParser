@@ -8,7 +8,12 @@
 
 
 import java.lang.reflect.*;
+import java.io.*;
 import java.util.*;
+import java.util.jar.*;
+import java.nio.file.*;
+import java.net.*;
+
 public class Parser {
 
 	
@@ -22,7 +27,7 @@ public class Parser {
 	private Class[] returnType;
 	private Object instance = null;
 	public static boolean verbose = false;
-	
+	public static Class cls;
 //============================================================================
 //////////////////////////////////////////////////////////////////////////////
 //																			//
@@ -32,14 +37,46 @@ public class Parser {
 //============================================================================
 	//Constructor that initializes the array of all methods and all the constructors and all the fields
 	//with parameter types and return types stored as well.
-	public Parser(String ClassN)throws ClassNotFoundException{
-		ClassName = Class.forName(ClassN);
-		methods = ClassName.getMethods();
-		fields = ClassName.getFields();
-		constructors = ClassName.getConstructors();
+	public Parser(String JarN, String ClassN)throws ClassNotFoundException{
+		Path currentRelativePath = Paths.get("");
+		String pathway = currentRelativePath.toAbsolutePath().toString();
+		pathway = pathway + "\\"+JarN;
+	
+		try {
+			File file = new File(pathway);
+			if(!file.exists())
+			{
+				throw new Throwable();
+			}
+			URL url = file.toURL();
+			URL[] urls = new URL[] {url};
+
+			ClassLoader cl = new URLClassLoader(urls);
+			this.cls = cl.loadClass(ClassN);
+		}
+		catch (ClassNotFoundException e) {
+			System.out.println("Could not find class: " + ClassN);
+			System.exit(0);
+		}
+		catch(Exception e)
+		{		
+		}	
+		catch(Throwable q)
+		{
+			System.out.println("Could not load jar file: "+ JarN);
+			System.exit(0);
+		}
+		
+
+		methods = cls.getMethods();
+		fields = cls.getFields();
+		
+		constructors = cls.getConstructors();
+			
 		int k = methods.length;
 		parameterTypes = new Class[k][];
 		returnType = new Class[k];
+		
 		int i = 0;
 		while (i < k){
 			parameterTypes[i] = methods[i].getParameterTypes();
@@ -50,11 +87,12 @@ public class Parser {
 			returnType[i] = methods[i].getReturnType();
 			i++;
 		}    
-		Constructor<?> constructor = ClassName.getConstructors()[0];
+		Constructor<?> constructor = cls.getConstructors()[0];
 		try{
 		instance = constructor.newInstance();
 		}catch(Throwable e){
-	}
+			System.out.println("here");
+		}
 	}
 	//Constructor that will not throw exceptions
 	//Used in case of faulty input from command line
