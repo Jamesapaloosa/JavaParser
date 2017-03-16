@@ -37,7 +37,8 @@ public class Parser {
 //============================================================================
 	//Constructor that initializes the array of all methods and all the constructors and all the fields
 	//with parameter types and return types stored as well.
-	public Parser(String JarN, String ClassN)throws ClassNotFoundException{
+	public Parser(String JarN, String ClassN, boolean T)throws ClassNotFoundException{
+		SetVerbose(T);
 		Path currentRelativePath = Paths.get("");
 		String pathway = currentRelativePath.toAbsolutePath().toString();
 		pathway = pathway + "\\"+JarN;
