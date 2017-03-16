@@ -17,15 +17,15 @@ public class Interface {
 	}
 	
 	public void PrintMenu(){
-		System.out.println("\n\nq 			: Quit the program.\nv			: Toggle verbose mode (stack traces).\nf			: List all known functions.\n?			: Print this helpful text.\n<expression>		: Evaluate the expression.\nExpressions can be integers, floats, strings (surrounded in double quotes) or function calls of the form '(identifier {expression}*)'.\n");
+		System.out.println("q 			: Quit the program.\nv			: Toggle verbose mode (stack traces).\nf			: List all known functions.\n?			: Print this helpful text.\n<expression>		: Evaluate the expression.\nExpressions can be integers, floats, strings (surrounded in double quotes) or function calls of the form '(identifier {expression}*)'.\n");
 	}
 	
 	public void PrintSyn(){
-		System.out.print("\n\nSynopsis:\nmethods:\nmethods { -h | -? | --help }\nmethods {-v --verbose}* <jar-file> [<class-name>]\nArguments:\n<jar-file>:   The .jar file that contains the class to load (see next line).\n<class-name>: The fully qualified class name containing public static command methods to call. [Default='Commands']\nQualifiers:\n  -v --verbose: Print out detailed errors, warning, and tracking.\n-h -? --help: Print out a detailed help message.\nSingle-char qualifiers may be grouped; long qualifiers may be truncated to unique prefixes and are not case sensitive.\nThis program interprets commands of the format '(<method> {arg}*)' on the command line, finds corresponding\nmethods in <class-name>, and executes them, printing the result to sysout.\n\n");
+		System.out.print("Synopsis:\nmethods:\nmethods { -h | -? | --help }\nmethods {-v --verbose}* <jar-file> [<class-name>]\nArguments:\n<jar-file>:   The .jar file that contains the class to load (see next line).\n<class-name>: The fully qualified class name containing public static command methods to call. [Default='Commands']\nQualifiers:\n  -v --verbose: Print out detailed errors, warning, and tracking.\n-h -? --help: Print out a detailed help message.\nSingle-char qualifiers may be grouped; long qualifiers may be truncated to unique prefixes and are not case sensitive.\nThis program interprets commands of the format '(<method> {arg}*)' on the command line, finds corresponding\nmethods in <class-name>, and executes them, printing the result to sysout.\n\n");
 	}
 	
 	public void PrintSyn2(){
-		System.out.print("\n\nSynopsis:\nmethods:\nmethods { -h | -? | --help }\nmethods {-v --verbose}* <jar-file> [<class-name>]\nArguments:\n<jar-file>:   The .jar file that contains the class to load (see next line).\n<class-name>: The fully qualified class name containing public static command methods to call. [Default='Commands']\nQualifiers:\n  -v --verbose: Print out detailed errors, warning, and tracking.\n-h -? --help: Print out a detailed help message.\nSingle-char qualifiers may be grouped; long qualifiers may be truncated to unique prefixes and are not case sensitive.\n");
+		System.out.print("Synopsis:\nmethods:\nmethods { -h | -? | --help }\nmethods {-v --verbose}* <jar-file> [<class-name>]\nArguments:\n<jar-file>:   The .jar file that contains the class to load (see next line).\n<class-name>: The fully qualified class name containing public static command methods to call. [Default='Commands']\nQualifiers:\n  -v --verbose: Print out detailed errors, warning, and tracking.\n-h -? --help: Print out a detailed help message.\nSingle-char qualifiers may be grouped; long qualifiers may be truncated to unique prefixes and are not case sensitive.\n");
 	}
 	
 	public void PrintVerboseOn(){
