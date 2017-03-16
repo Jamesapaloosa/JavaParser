@@ -129,7 +129,7 @@ public class Methods
 					break;
 
 				default:
-					P.ParseExpression(MenuC);
+					//P.ParseExpression(MenuC);
 			}
 		}
 	}

@@ -42,7 +42,7 @@ public class Parser {
 		Path currentRelativePath = Paths.get("");
 		String pathway = currentRelativePath.toAbsolutePath().toString();
 		//*****Change this for Linux("/") or Windows("\\")
-		pathway = pathway + "\\"+JarN;
+		pathway = pathway + "/"+JarN;
 		//*****
 		try {
 			File file = new File(pathway);
@@ -134,14 +134,14 @@ public class Parser {
 		}
 	}
 	
-public void ParseExpression(String string) {
-	try{
-    ParseTree t = new ParseTree(string, ClassName, instance, verbose);
-    System.out.println(t.getEvaluation().toString());
-	}catch(NullPointerException e){
-		System.out.println("null was printed");
-	}
-}
+//public void ParseExpression(String string) {
+//	try{
+//    ParseTree t = new ParseTree(string, ClassName, instance, verbose);
+//    System.out.println(t.getEvaluation().toString());
+//	}catch(NullPointerException e){
+//		System.out.println("null was printed");
+//	}
+//}
 
 
 //============================================================================	

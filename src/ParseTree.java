@@ -1,3 +1,5 @@
+import com.sun.xml.internal.bind.v2.model.util.ArrayInfoUtil;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -13,94 +15,67 @@ public class ParseTree {
     public String input;
     public Node root;
     private ArrayList<MatchResult> matches;
-	private Object instance = null;
-	private Class<?> ClassName;
-	private boolean verbose = false;
+    private JarExecutor jarExec;
 
-    public ParseTree(String input, 	Class<?> ClassName, Object instance, boolean V) {
-    	verbose = V;
-    	this.instance = instance;
-    	this.ClassName = ClassName;
+    public ParseTree(String input, JarExecutor jarExec) {
         this.input = input;
+    	this.jarExec = jarExec;
         tokenize();
         constructTree();
         validate(root);
     }
 
-    public Object getEvaluation() {
-        return evaluate(root);
+//    public void getEvaluation() {
+//        try {
+//            Object result = evaluate(root);
+//        } catch (ParseException e) {
+//            System.out.printf(e.getMessage());
+//        }
+//    }
+//
+//    private Object evaluate(Node n) {
+//        if (n.children.isEmpty()) {
+//            if (n.isValue) {
+//                return n.value;
+//            } else {
+//                return jarExec.executeMethod((String) n.value, (ArrayList<Object>) n.children.stream().map(c -> c.value).collect(Collectors.toList()));
+//            }
+//        } else {
+//            return jarExec.executeMethod((String) n.value, (ArrayList<Object>) n.children.stream().map(this::evaluate).collect(Collectors.toList()));
+//        }
+//    }
+
+//    private Object evaluate(Node n) throws ParseException {
+////        if (n.children.isEmpty()) {
+////            if (n.isValue) {
+////                return n.value;
+////            } else {
+////                return jarExec.executeMethod((String) n.value, (ArrayList<Object>) n.children.stream().map(c -> c.value).collect(Collectors.toList()));
+////            }
+////        } else {
+//            return jarExec.executeMethod((String) n.value, (ArrayList<Object>) n.children.stream().map(this::evaluate).collect(Collectors.toList()));
+//        //}
+//    }
+
+    //This function should not be in this file, and is only for temporary testing!
+    private Object executeMethod(String function, ArrayList<Object> parameters) {
+        String result = "("+function+(parameters.isEmpty() ? "" : "ExecutedWithArgs");
+        for (Object p : parameters) {
+            result += p.toString();
+        }
+        result += ")";
+        return result;
     }
 
-
-    private Object evaluate(Node n) {
-        if (n.children.isEmpty()) {
-            if (n.isValue) {
-                return n.value;
-            } else {
-            	try{
-                return executeMethod((String) n.value, (ArrayList<Object>) n.children.stream().map(c -> c.value).collect(Collectors.toList()));
-            	}catch(Throwable e){
-            		ErrorArrows(n.start, (String) n.value, (ArrayList<Object>) n.children.stream().map(this::evaluate).collect(Collectors.toList()), e);
-            		System.out.println("Method not found here?");
-            		return null;
-            	}
-            }
+    private Class toPrimitiveClass(Object o) {
+        if (o instanceof Integer) {
+            return int.class;
+        } else if (o instanceof Float) {
+            return float.class;
         } else {
-        	try{
-            return executeMethod((String) n.value, (ArrayList<Object>) n.children.stream().map(this::evaluate).collect(Collectors.toList()));
-        	}catch(NoSuchMethodException f){
-        		ErrorArrows(n.start, (String) n.value, (ArrayList<Object>) n.children.stream().map(this::evaluate).collect(Collectors.toList()), f);
-        		return null;
-        	}catch(IllegalArgumentException d){
-        		ErrorArrows(n.start, (String) n.value, (ArrayList<Object>) n.children.stream().map(this::evaluate).collect(Collectors.toList()), d);
-        		return null;
-        	}
-        	catch(Throwable e){
-        		ErrorArrows(n.start, (String) n.value, (ArrayList<Object>) n.children.stream().map(this::evaluate).collect(Collectors.toList()), e);
-        		return null;
-        	}
+            return o.getClass();
         }
     }
-    
-    
-//Execute Method ================================================
-	private Object executeMethod(String function, ArrayList<Object> parameters) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, IllegalArgumentException {
-		Method method;
-		Class[] parameterTypes = new Class[parameters.size()];
-		int i = 0;
-		Class<?> temp;
-		int j = parameters.size();
-		while (i < j){
-			temp = parameters.get(i).getClass();
-			if(temp.toString().equals("class java.lang.Integer")){
-				parameterTypes[i] = int.class;
-				parameters.set(i, ((int) parameters.get(i)));
-				//System.out.println(((Integer) parameters.get(i)).intValue()); 
-			}
-			else if(temp.toString().equals("class java.lang.Float")){
-				parameterTypes[i] = float.class;
-				parameters.set(i, (float) parameters.get(i));
-			}
-			else{
-				parameterTypes[i] = String.class;
-				parameters.set(i, (String)parameters.get(i));
-			}
-			i++;
-		}
-
-		for(Object o: parameters){
-			System.out.println(o.getClass());
-			System.out.println(o);
-		}
-		
-		for(Class o: parameterTypes){
-			System.out.println(o);
-		}
-		
-		method = ClassName.getMethod(function, parameterTypes);
-		return(method.invoke(instance, parameters));
-	}
-//===================================================================
 	
 	
     private void tokenize() {
@@ -204,47 +179,53 @@ public class ParseTree {
         }
 
     }
-  //============================================================================
-//////////////////////////////////////////////////////////////////////////////
-//	//
-//ErrorArrows									//
-//	//
-//////////////////////////////////////////////////////////////////////////////
-//============================================================================
-//Displays the arrows and needed error message to be printed
-private void ErrorArrows(int counter, String Function, ArrayList<Object> Parameters, Throwable e){
-	Class[] parameterTypes = new Class[Parameters.size()];
-	int i = 0;
-	Class<?> temp;
-	int j = Parameters.size();
-	while (i < j){
-		temp = Parameters.get(i).getClass();
-		if(temp.toString().equals("class java.lang.Integer")){
-			parameterTypes[i] = int.class;
-		}
-		else if(temp.toString().equals("class java.lang.Float")){
-			parameterTypes[i] = float.class;
-		}
-		else{
-			parameterTypes[i] = String.class;
-		}
-		i++;
-	}
-		String expression = "(" + Function +" ";
-		for(Class C: parameterTypes){
-				expression = expression + " " + C;
-		}
-		System.out.println("Matching function for '" + expression + ")' not found at offset " + (counter));
-		System.out.println(input);
-		int d = 0;
-		while(d < counter){
-				System.out.print("-");
-				d++;
-		}
-		System.out.println("^");
-		if(verbose == true){
-				e.printStackTrace();
-		}
-	}
+
+//    public static void main(String[] args) {
+//        ParseTree p = new ParseTree("(add 1 2 3 \"asdf\")");
+//        p.getEvaluation();
+//    }
+//
+//  //============================================================================
+//    //////////////////////////////////////////////////////////////////////////////
+//    //	//
+//    //ErrorArrows									//
+//    //	//
+//    //////////////////////////////////////////////////////////////////////////////
+//    //============================================================================
+//    //Displays the arrows and needed error message to be printed
+//    private void ErrorArrows(int counter, String Function, ArrayList<Object> Parameters, Throwable e){
+//        Class[] parameterTypes = new Class[Parameters.size()];
+//        int i = 0;
+//        Class<?> temp;
+//        int j = Parameters.size();
+//        while (i < j){
+//            temp = Parameters.get(i).getClass();
+//            if(temp.toString().equals("class java.lang.Integer")){
+//                parameterTypes[i] = int.class;
+//            }
+//            else if(temp.toString().equals("class java.lang.Float")){
+//                parameterTypes[i] = float.class;
+//            }
+//            else{
+//                parameterTypes[i] = String.class;
+//            }
+//            i++;
+//        }
+//		String expression = "(" + Function +" ";
+//		for(Class C: parameterTypes){
+//				expression = expression + " " + C;
+//		}
+//		System.out.println("Matching function for '" + expression + ")' not found at offset " + (counter));
+//		System.out.println(input);
+//		int d = 0;
+//		while(d < counter){
+//				System.out.print("-");
+//				d++;
+//		}
+//		System.out.println("^");
+//		if(verbose == true){
+//				e.printStackTrace();
+//		}
+//	}
 
 }
