@@ -23,78 +23,42 @@ public class Methods
 		
 		String jarString = "";
 		String functionClassName = "";
-		// int i = 0
-		// while(i < args.length)
-		// {
-			// if(arg[0].charAt(0) == '-')
-			// {
-				
-			// }
-			
-			// i++;
-		// }
 		
+		//Parse over input
 		if(args.length == 0)
 		{
 			System.out.println("len 0");
 			Verbose = cp.ParseProgramInput0(args, Verbose);
-			System.exit(0);
 		}
-		
 		else if(args.length == 1)
 		{
 			System.out.println("len 1");
 			Verbose = cp.ParseProgramInput1(args, Verbose);
-			System.exit(0);
 		}
-		
 		else if(args.length == 2)
 		{
 			System.out.println("len 2");
-			if(args[0].charAt(0) == '-' && args[1].endsWith(".jar"))
+			try
 			{
-				System.out.println("default class");
-				Verbose = cp.ParseProgramInput(args, Verbose);
-				try
-				{
-					jarString = args[1];
-					functionClassName = "Commands";
-					P = new Parser(jarString, functionClassName);
-				}
-				catch(ClassNotFoundException e)
-				{
-					System.out.println("Could not find class: " + functionClassName);
-					P = new Parser();
-					System.exit(0);
-				}
-				catch(Exception f)
-				{
-				}
+				jarString = args[0];
+				functionClassName = args[1];
+				P = new Parser(jarString, functionClassName, Verbose);
 			}
-			
-			else
+			catch(ClassNotFoundException e)
 			{
-				try
-				{
-					jarString = args[0];
-					functionClassName = args[1];
-					P = new Parser(jarString, functionClassName);
-				}
-				catch(ClassNotFoundException e)
-				{
-					System.out.println("Could not find class: " + functionClassName);
-					P = new Parser();
-					System.exit(0);
-				}
-				catch(Exception f)
-				{
-				}
+				System.out.println("Could not find class: " + functionClassName);
+				P = new Parser();
+				System.exit(0);
 			}
+			catch(Exception f)
+			{
+			}
+
 			mainLoop();
 		}
 		else if(args.length == 3)
 		{
-			System.out.println("len 3");
+			System.out.println("else");
 			Verbose = cp.ParseProgramInput(args, Verbose);
 			
 			try
@@ -109,7 +73,7 @@ public class Methods
 					System.exit(-3);
 				}
 				functionClassName = args[2];
-				P = new Parser(jarString, functionClassName);
+				P = new Parser(jarString, functionClassName, Verbose);
 			}
 			catch(Exception e)
 			{
@@ -146,11 +110,13 @@ public class Methods
 					{
 						Verbose = true;
 						MainI.PrintVerboseOn();
+						P.SetVerbose(true);
 					}
 					else
 					{
 						MainI.PrintVerboseOff();
 						Verbose = false;
+						P.SetVerbose(false);
 					}
 					break;
 
