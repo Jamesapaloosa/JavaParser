@@ -40,9 +40,8 @@ public class Parser {
 	public Parser(String JarN, String ClassN)throws ClassNotFoundException{
 		Path currentRelativePath = Paths.get("");
 		String pathway = currentRelativePath.toAbsolutePath().toString();
-		//CHANGE THIS LINE FOR WINDOWS("\\") AND LINUX ("/")
-		pathway = pathway + "\\"+JarN; 
-		//*****
+		pathway = pathway + "\\"+JarN;
+	
 		try {
 			File file = new File(pathway);
 			if(!file.exists())
@@ -57,7 +56,7 @@ public class Parser {
 		}
 		catch (ClassNotFoundException e) {
 			System.out.println("Could not find class: " + ClassN);
-			System.exit(0);
+			System.exit(-6);
 		}
 		catch(Exception e)
 		{		
@@ -65,7 +64,7 @@ public class Parser {
 		catch(Throwable q)
 		{
 			System.out.println("Could not load jar file: "+ JarN);
-			System.exit(0);
+			System.exit(-5);
 		}
 		
 
