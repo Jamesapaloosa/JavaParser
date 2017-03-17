@@ -127,7 +127,7 @@ public class ReflectiveParser {
                         p.getEvaluation();
                     } catch (ParseException e) {
                         e.printErrorMessage();
-                        if (verbose) e.printStackTrace();
+                        if (verbose) e.printStackTrace(System.out);
                     }
             }
         }

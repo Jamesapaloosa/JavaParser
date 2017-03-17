@@ -30,23 +30,12 @@ public class ParseTree {
         validate(root);
     }
 
-    public void getEvaluation() {
-        try {
-            Object result = evaluate(root);
-            System.out.println(result);
-        } catch (ParseException e) {
-            e.printErrorMessage();
-        }
-    }
+    public void getEvaluation() throws ParseException { System.out.println(evaluate(root)); }
 
     private Object evaluate(Node n) throws ParseException {
         try {
             if (n.children.isEmpty()) {
-                if (n.isValue) {
-                    return n.value;
-                } else {
-                    return jarExec.executeMethod((String) n.value, (ArrayList<Object>) n.children.stream().map(c -> c.value).collect(Collectors.toList()));
-                }
+                return n.isValue ? n.value : jarExec.executeMethod((String) n.value, (ArrayList<Object>) n.children.stream().map(c -> c.value).collect(Collectors.toList()));
             } else {
                 return jarExec.executeMethod((String) n.value, (ArrayList<Object>) n.children.stream().map(this::evaluate).collect(Collectors.toList()));
             }
@@ -150,9 +139,7 @@ public class ParseTree {
         }
 
         private void validate() {
-            if (!isValue && (start - 1 < 0 || input.charAt(start - 1) != '(')) {
-                throw new ParseException("Unexpected character encountered at offset " + start, start, input);
-            } else if (!isValue && ((String) value).matches("(\\W)|(\\b[0-9].*\\b)")) {
+            if (!isValue && ((start - 1 < 0 || input.charAt(start - 1) != '(') || ((String) value).matches("(\\W)|(\\b[0-9].*\\b)"))) {
                 throw new ParseException("Unexpected character encountered at offset " + start, start, input);
             }
         }
