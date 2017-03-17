@@ -6,7 +6,14 @@ import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-
+/**
+ * <h1>ParseTree</h1>
+ * This class handles methods used in create and validate the parseTree
+ * Assignment 2 CPSC449
+ * @author  Daniel Dastoor, James Gilders, Carlin Liu, Teresa Van, Thomas Vu
+ * @version 1.0
+ * @since   2017-03-17
+ */
 public class ParseTree {
 
     public String input;
@@ -17,6 +24,12 @@ public class ParseTree {
     //TODO: Add constructor check for <value> <anything else> error case
     //TODO: Add constructor check for <expression> <anything else> error case
 
+    /**
+     * This constructor builds and tokenizes the parseTree. It will then validate
+     * @param input The string input of the expression
+     * @param jarExec The jarExecutor that is used
+     * @throws ParseException Thrown when the expression cannot be parsed
+     */
     public ParseTree(String input, JarExecutor jarExec) throws ParseException {
         this.input = input;
     	this.jarExec = jarExec;
@@ -30,8 +43,17 @@ public class ParseTree {
         validate(root);
     }
 
+    /**
+     * Evaluate the root and print out the result
+     */
     public void getEvaluation() throws ParseException { System.out.println(evaluate(root)); }
 
+    /**
+     * This method will evaluate a given node. It will check if the node is empty and will execute the method at the location
+     * @param n Node to be evaluated
+     * @return The object result of the execution
+     * @throws ParseException Throw when the method cannot be parsed
+     */
     private Object evaluate(Node n) throws ParseException {
         try {
             if (n.children.isEmpty()) {
@@ -43,7 +65,10 @@ public class ParseTree {
             throw new ParseException(e.getMessage(), n, input);
         }
     }
-	
+
+    /**
+     * This method will tokenize the  input
+     */
     private void tokenize() {
         Pattern p = Pattern.compile("\"[^\"]*\"|([\\S&&[^()]]+)|([()])");
         Matcher m = p.matcher(input);
@@ -53,6 +78,10 @@ public class ParseTree {
         }
     }
 
+    /**
+     * This method constructs the tree
+     * @throws ParseException Throw when it cannot be parsed
+     */
     private void constructTree() throws ParseException {
         Stack<Node> stack = new Stack<>();
         Node t, t1, t2;
@@ -87,6 +116,10 @@ public class ParseTree {
         parse(root);
     }
 
+    /**
+     * Check if the node has children, if empty parse. Else loop through children and parse
+     * @param n Node to be parsed
+     */
     private void parse(Node n) {
         if (n.children.isEmpty()) {
             n.parse();
@@ -97,6 +130,10 @@ public class ParseTree {
         }
     }
 
+    /**
+     * Validate a node and its children
+     * @param n Node to be validated
+     */
     private void validate(Node n) {
         n.validate();
         for (Node c : n.children) {
@@ -104,6 +141,9 @@ public class ParseTree {
         }
     }
 
+    /**
+     * Class type node used to represent node objects inside parse tree
+     */
     public class Node {
 
         private Object value;
