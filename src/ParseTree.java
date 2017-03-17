@@ -1,6 +1,7 @@
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.EmptyStackException;
 import java.util.Stack;
 import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
@@ -33,6 +34,7 @@ public class ParseTree {
     public ParseTree(String input, JarExecutor jarExec) throws ParseException {
         this.input = input;
     	this.jarExec = jarExec;
+        if (input.charAt(0) == ')') throw new ParseException("Unexpected character encountered at offset " + 0, 0, input);
         Pattern p = Pattern.compile("^([^\"]*\"[^\"]*[^\"]*\"[^\"]*)*[^\"]*(?<error>\"[^\"]*)$");
         Matcher m = p.matcher(input);
         if (m.find()) {
@@ -83,37 +85,44 @@ public class ParseTree {
      * @throws ParseException Throw when it cannot be parsed
      */
     private void constructTree() throws ParseException {
-        Stack<Node> stack = new Stack<>();
-        Node t, t1, t2;
-        for (MatchResult m : matches) {
-            if (m.group().equals(")")) {
-                if (stack.peek().value.equals("(")) {
-                    throw new ParseException("Missing identifier in funcall at offset " + m.start(), m.start(), input);
-                }
-                ArrayList<Node> children = new ArrayList<>();
-                t1 = stack.pop();
-                t2 = stack.peek();
-                while (!t2.value.equals("(")) {
-                    children.add(t1);
+        try {
+            Stack<Node> stack = new Stack<>();
+            Node t, t1, t2;
+            for (MatchResult m : matches) {
+                if (m.group().equals(")")) {
+                    if (stack.peek().value.equals("(")) {
+                        throw new ParseException("Missing identifier in funcall at offset " + m.start(), m.start(), input);
+                    }
+                    ArrayList<Node> children = new ArrayList<>();
                     t1 = stack.pop();
                     t2 = stack.peek();
+                    //TODO: remove index
+                    int index = m.start() - 1;
+                    while (!t2.value.equals("(")) {
+                        children.add(t1);
+                        t1 = stack.pop();
+                        t2 = stack.peek();
+                        index--;
+                    }
+                    Collections.reverse(children);
+                    t1.children = children;
+                    stack.pop();
+                    stack.push(t1);
+                } else {
+                    t = new Node(m);
+                    stack.push(t);
                 }
-                Collections.reverse(children);
-                t1.children = children;
-                stack.pop();
-                stack.push(t1);
-            } else {
-                t = new Node(m);
-                stack.push(t);
             }
-        }
-        t = stack.peek();
-        stack.pop();
-        root = t;
-        if (!stack.isEmpty()) {
+            t = stack.peek();
+            stack.pop();
+            root = t;
+            if (!stack.isEmpty()) {
+                throw new ParseException("Encountered end-of-input while reading expression beginning at offset 0 at offset " + input.length(), input.length(), input);
+            }
+            parse(root);
+        } catch (EmptyStackException e) {
             throw new ParseException("Encountered end-of-input while reading expression beginning at offset 0 at offset " + input.length(), input.length(), input);
         }
-        parse(root);
     }
 
     /**
