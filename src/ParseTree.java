@@ -17,12 +17,11 @@ public class ParseTree {
     public ParseTree(String input, JarExecutor jarExec) throws ParseException {
         this.input = input;
     	this.jarExec = jarExec;
-        //TODO: Make this fail below: (add (len "hello") (len "bob))
-//        Pattern p = Pattern.compile("\".*\"|([\\S&&[^()]]+)|([()])");
-//        Matcher m = p.matcher(input);
-//        if (m.find()) {
-//            throw new ParseException("Encountered end-of-input while reading string beginning at offset " + 0 + " at offset " + input.length(), input.length(), input);
-//        }
+        Pattern p = Pattern.compile("^([^\"]*\"[^\"]*[^\"]*\"[^\"]*)*[^\"]*(?<error>\"[^\"]*)$");
+        Matcher m = p.matcher(input);
+        if (m.find()) {
+            throw new ParseException("Encountered end-of-input while reading string beginning at offset " + m.start("error") + " at offset " + input.length(), input.length(), input);
+        }
         tokenize();
         constructTree();
         validate(root);
