@@ -21,7 +21,16 @@ public class JarExecutor {
     private Class[] returnType;
     private Object instance = null;
     public Class cls;
-
+	/**
+	* Constructor for class that creates the path to the specified jar file. It will first check if the file already exists.
+	* If the file does not exist it means File is not found and will catch and print out an error message. If the file exists 
+	* it will try to load the class from the generated URL. If the class is not found it will catch with an error message. It 
+	* will then get the methods, fields and constructors in the current class. The function will loop to find all the current
+	* parameters of each method and will do the same for the return types.
+	* @param jarName is the string used for the jar name
+	* @param className is the string used for the class name
+	* @return None  
+	*/
     public JarExecutor(String jarName, String className) {
 	Interface MainI = new Interface();
         Path currentRelativePath = Paths.get("");
