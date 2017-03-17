@@ -103,7 +103,7 @@ public class ReflectiveParser {
     public static void mainLoop() {
         while (Run == true) {
             System.out.print("> ");
-            MenuC = MainI.GetInput();
+            MenuC = MainI.GetInput().trim();
             switch (MenuC) {
                 case "q":
                     Run = false;
@@ -128,6 +128,9 @@ public class ReflectiveParser {
 
                 case "?":
                     MainI.PrintMenu();
+                    break;
+
+                case "":
                     break;
 
                 default:
