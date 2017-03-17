@@ -1,8 +1,17 @@
+//Assignment 2 CPSC449
+//Daniel Dastoor, James Gilders, Carlin Liu, Teresa Van, Thomas Vu
+
 import java.lang.reflect.*;
 import java.util.*;
 
 public class ConsoleParse
 {
+	/**
+	*Method that parses console input that has length 0. It will create a new interface and will print the synopsis to console.
+	* @param input An array containing the console inputs
+	* @param Verbose The current boolean value of Verbose
+	* @return boolean Containing the updated status of verbose 
+	*/
 	public boolean ParseProgramInput0(String[] input, boolean Verbose)
 	{
 		Interface MainI = new Interface();
@@ -10,7 +19,18 @@ public class ConsoleParse
 		
 		return(Verbose);
 	}
-	
+	/**
+	*Method that parses console input that has a length of 1. The function will first create a new interface for all the printing
+	*and will then set default variables. It will then parse the first character of the first string and check if it contains '-'.
+	*It will then check the same character on the next position. It it falls under '--' it will check for the qualifiers of help
+	*and verbose. If it doesnt match it will exit or check the input if it is '-'. The method will then loop through the entire 
+	*string and will compare to the available parameters of 'h', '?' and 'v'. If these match it will set the corresponding boolean.
+	*If it doesn't match it will print out an error message. At the end of the method the booleans are checked to see which prints 
+	*need to be made.
+	* @param input An array containing the console inputs
+	* @param Verbose The current boolean value of Verbose
+	* @return boolean Containing the updated status of verbose  
+	*/
 	public boolean ParseProgramInput1(String[] input, boolean Verbose) 
 	{
 		Interface MainI = new Interface();
@@ -91,7 +111,17 @@ public class ConsoleParse
 	}
 	
 	
-
+	/**
+	*Method that parses console input that has a length of 2 or more. The function will first create a new interface for all the printing
+	*and will then set default variables. It will then parse the first character of the first string and check if it contains '-'.
+	*It will then check the same character on the next position. It it falls under '--' it will check for the qualifiers of help
+	*and verbose. If it doesnt match it will exit or check the input if it is '-'. The method will then loop through the entire 
+	*string and will compare to the available parameters of 'h', '?' and 'v'. If these match it will set the corresponding boolean.
+	*or an error message. At the end of the method the booleans are checked to see which prints need to be made.
+	* @param input An array containing the console inputs
+	* @param Verbose The current boolean value of Verbose
+	* @return boolean Containing the updated status of verbose  
+	*/
 	public boolean ParseProgramInput(String[] input, boolean Verbose)
 	{
 		Interface MainI = new Interface();
