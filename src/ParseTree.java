@@ -17,6 +17,12 @@ public class ParseTree {
     public ParseTree(String input, JarExecutor jarExec) throws ParseException {
         this.input = input;
     	this.jarExec = jarExec;
+        //TODO: Make this fail below: (add (len "hello") (len "bob))
+//        Pattern p = Pattern.compile("\".*\"|([\\S&&[^()]]+)|([()])");
+//        Matcher m = p.matcher(input);
+//        if (m.find()) {
+//            throw new ParseException("Encountered end-of-input while reading string beginning at offset " + 0 + " at offset " + input.length(), input.length(), input);
+//        }
         tokenize();
         constructTree();
         validate(root);
@@ -46,19 +52,9 @@ public class ParseTree {
             throw new ParseException(e.getMessage(), n, input);
         }
     }
-
-//    //This function should not be in this file, and is only for temporary testing!
-//    private Object executeMethod(String function, ArrayList<Object> parameters) {
-//        String result = "("+function+(parameters.isEmpty() ? "" : "ExecutedWithArgs");
-//        for (Object p : parameters) {
-//            result += p.toString();
-//        }
-//        result += ")";
-//        return result;
-//    }
 	
     private void tokenize() {
-        Pattern p = Pattern.compile("\".*\"|([\\S&&[^()]]+)|([()])");
+        Pattern p = Pattern.compile("\"[^\"]*\"|([\\S&&[^()]]+)|([()])");
         Matcher m = p.matcher(input);
         matches = new ArrayList<>();
         while (m.find()) {
@@ -92,8 +88,7 @@ public class ParseTree {
         stack.pop();
         root = t;
         if (!stack.isEmpty()) {
-            //System.out.println("Bracket mismatch error at: " + (input.length() - 1));
-            throw new ParseException("Encountered end-of-input while reading string beginning at offset 0 at offset " + input.length(), input);
+            throw new ParseException("Encountered end-of-input while reading expression beginning at offset 0 at offset " + input.length(), input.length(), input);
         }
         parse(root);
     }
@@ -115,34 +110,20 @@ public class ParseTree {
         }
     }
 
-//    private void printErrorMessage(ParseException e){
-//		System.out.println(e.getMessage());
-//		System.out.println(input);
-//		int d = 0;
-//		while(d < e.node.start){
-//				System.out.print("-");
-//				d++;
-//		}
-//		System.out.println("^");
-////		if(verbose == true){
-////				e.printStackTrace();
-////		}
-//    }
-
     public class Node {
 
-        public Object value;
+        private Object value;
         public int start;
-        public boolean isValue = false;
+        private boolean isValue = false;
         private ArrayList<Node> children;
 
-        public Node(MatchResult match) {
+        private Node(MatchResult match) {
             value = match.group();
             start = match.start();
             children = new ArrayList<>();
         }
 
-        public void parse() {
+        private void parse() {
             String str = value.toString();
             if (str.charAt(0) == '"' && str.charAt(str.length() - 1) == '"') {
                 value = str.substring(1, str.length() - 1);
@@ -163,63 +144,14 @@ public class ParseTree {
 
         }
 
-        public void validate() {
+        private void validate() {
             if (!isValue && (start - 1 < 0 || input.charAt(start - 1) != '(')) {
-            	
-                System.out.println("Error at: " + start);
+                throw new ParseException("Unexpected character encountered at offset " + start, start, input);
             } else if (!isValue && ((String) value).matches("(\\W)|(\\b[0-9].*\\b)")) {
-                System.out.println("Error at: " + start);
+                throw new ParseException("Unexpected character encountered at offset " + start, start, input);
             }
         }
 
     }
-
-//    public static void main(String[] args) {
-//        ParseTree p = new ParseTree("(add 1 2 3 \"asdf\")");
-//        p.getEvaluation();
-//    }
-//
-//  //============================================================================
-//    //////////////////////////////////////////////////////////////////////////////
-//    //	//
-//    //ErrorArrows									//
-//    //	//
-//    //////////////////////////////////////////////////////////////////////////////
-//    //============================================================================
-//    //Displays the arrows and needed error message to be printed
-//    private void ErrorArrows(int counter, String Function, ArrayList<Object> Parameters, Throwable e){
-//        Class[] parameterTypes = new Class[Parameters.size()];
-//        int i = 0;
-//        Class<?> temp;
-//        int j = Parameters.size();
-//        while (i < j){
-//            temp = Parameters.get(i).getClass();
-//            if(temp.toString().equals("class java.lang.Integer")){
-//                parameterTypes[i] = int.class;
-//            }
-//            else if(temp.toString().equals("class java.lang.Float")){
-//                parameterTypes[i] = float.class;
-//            }
-//            else{
-//                parameterTypes[i] = String.class;
-//            }
-//            i++;
-//        }
-//		String expression = "(" + Function +" ";
-//		for(Class C: parameterTypes){
-//				expression = expression + " " + C;
-//		}
-//		System.out.println("Matching function for '" + expression + ")' not found at offset " + (counter));
-//		System.out.println(input);
-//		int d = 0;
-//		while(d < counter){
-//				System.out.print("-");
-//				d++;
-//		}
-//		System.out.println("^");
-//		if(verbose == true){
-//				e.printStackTrace();
-//		}
-//	}
 
 }

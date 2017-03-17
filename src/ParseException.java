@@ -7,9 +7,9 @@ public class ParseException extends RuntimeException {
 
     public ParseException() { super(); }
 
-    public ParseException(String msg, String input) {
+    public ParseException(String msg, int index, String input) {
         super(msg);
-        this.index = input.length();
+        this.index = index;
         this.input = input;
     }
 

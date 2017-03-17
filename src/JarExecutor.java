@@ -132,40 +132,33 @@ public class JarExecutor {
     }
 
     private String expressionString(String function, ArrayList<Object> parameters){
-        Class[] parameterTypes = new Class[parameters.size()];
+        //Class[] parameterTypes = new Class[parameters.size()];
+        String[] parameterTypes = new String[parameters.size()];
         int i = 0;
         Class<?> temp;
         int j = parameters.size();
         while (i < j){
             temp = parameters.get(i).getClass();
             if(temp.toString().equals("class java.lang.Integer")){
-                parameterTypes[i] = int.class;
+                parameterTypes[i] = "int";
+                //parameterTypes[i] = int.class;
             }
             else if(temp.toString().equals("class java.lang.Float")){
-                parameterTypes[i] = float.class;
+                parameterTypes[i] = "float";
+                //parameterTypes[i] = float.class;
             }
             else{
-                parameterTypes[i] = String.class;
+                parameterTypes[i] = "string";
+                //parameterTypes[i] = String.class;
             }
             i++;
         }
-		String expression = "(" + function + " ";
-		for(Class C: parameterTypes){
-				expression = expression + " " + C;
+		String expression = "(" + function;
+		for(String type : parameterTypes){
+				expression += " " + type;
 		}
         expression += ")";
         return expression;
-//		System.out.println("Matching function for '" + expression + ")' not found at offset " + (counter));
-//		System.out.println(input);
-//		int d = 0;
-//		while(d < counter){
-//				System.out.print("-");
-//				d++;
-//		}
-//		System.out.println("^");
-//		if(verbose == true){
-//				e.printStackTrace();
-//		}
 	}
 
 }
