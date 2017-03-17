@@ -102,16 +102,14 @@ public class ReflectiveParser {
                     if (verbose == false) {
                         verbose = true;
                         mainI.PrintVerboseOn();
-                        //jarExec.SetVerbose(true);
                     } else {
                         mainI.PrintVerboseOff();
                         verbose = false;
-                        //jarExec.SetVerbose(false);
                     }
                     break;
 
                 case "f":
-                    //jarExec.PrintFunctions();
+                    jarExec.printFunctions();
                     break;
 
                 case "?":

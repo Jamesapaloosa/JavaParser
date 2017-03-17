@@ -44,13 +44,13 @@ public class Interface {
 	* Method that prints out verbose on
 	*/
 	public void PrintVerboseOn(){
-		System.out.println("verbose on");
+		System.out.println("Verbose on.");
 	}
 	/**
 	* Method that prints out verbose off
 	*/
 	public void PrintVerboseOff(){
-		System.out.println("verbose off");
+		System.out.println("Verbose off.");
 	}
 	/**
 	* Method that prints out bye

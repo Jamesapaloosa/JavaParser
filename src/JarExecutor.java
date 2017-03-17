@@ -158,4 +158,48 @@ public class JarExecutor {
         return expression;
 	}
 
+    /**
+     * Method that prints the functions in the desired program.
+     */
+    public void printFunctions(){
+        int i = 0;
+        int j = 0;
+        int k = methods.length;
+        String inType;
+        while(i < k){
+            System.out.print("(" + methods[i].getName());
+            j = 0;
+            while(j < parameterTypes[i].length){
+                inType = getTypeString(parameterTypes[i][j].toString());
+                System.out.print(" " + inType);
+                j++;
+            }
+            inType = getTypeString(returnType[i].toString());
+            System.out.print(") : " + inType);
+            i++;
+            System.out.println("");
+        }
+    }
+
+    /**
+     * Takes in a string and returns its type.
+     * Takes in "java.lang.string" and returns "String".
+     * @param input String to get type from
+     * @return String type
+     */
+    private String getTypeString(String input){
+        String [] temp = input.split(" ");
+        String output = "";
+
+        if(temp.length > 1){
+            output = temp[1];
+            temp = output.split("\\.");
+            output = temp[temp.length - 1];
+        }
+        else{
+            output = input;
+        }
+        return output;
+    }
+
 }
