@@ -12,31 +12,29 @@ public class ReflectiveParser {
 
         String jarString = "";
         String functionClassName = "";
-
+		Interface MainI = new Interface();
+		
         if (args.length == 0) {
 
-            System.out.println("len 0");
             Verbose = cp.ParseProgramInput0(args, Verbose);
             System.exit(0);
 
         } else if (args.length == 1) {
 
-            System.out.println("len 1");
             Verbose = cp.ParseProgramInput1(args, Verbose);
             System.exit(0);
 
         } else if (args.length == 2) {
 
-            System.out.println("len 2");
             if (args[0].charAt(0) == '-' && args[1].endsWith(".jar")) {
 
-                System.out.println("default class");
                 Verbose = cp.ParseProgramInput(args, Verbose);
 //                try {
                     jarString = args[1];
                     functionClassName = "Commands";
                     //jarExec = new Parser(jarString, functionClassName, Verbose);
                     jarExec = new JarExecutor(jarString, functionClassName);
+					MainI.PrintMenu();
 //                } catch (ClassNotFoundException e) {
 //                    System.out.println("Could not find class: " + functionClassName);
 //                    System.exit(0);
@@ -50,6 +48,7 @@ public class ReflectiveParser {
                     jarString = args[0];
                     functionClassName = args[1];
                     jarExec = new JarExecutor(jarString, functionClassName);
+					MainI.PrintMenu();
 //                } catch (ClassNotFoundException e) {
 //                    System.out.println("Could not find class: " + functionClassName);
 //                    jarExec = new Parser();
@@ -64,7 +63,6 @@ public class ReflectiveParser {
 
         } else if (args.length == 3) {
 
-            System.out.println("len 3");
             Verbose = cp.ParseProgramInput(args, Verbose);
 
 //            try {
@@ -77,6 +75,7 @@ public class ReflectiveParser {
                 functionClassName = args[2];
                 //jarExec = new Parser(jarString, functionClassName, Verbose);
                 jarExec = new JarExecutor(jarString, functionClassName);
+				MainI.PrintMenu();
 //            } catch (Exception e) {
 //                System.out.println("asdasdasd");
 //                jarExec = new Parser();
