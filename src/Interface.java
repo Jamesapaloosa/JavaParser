@@ -1,11 +1,16 @@
-//Assignment 2 CPSC449
-//Daniel Dastoor, James Gilders, Carlin Liu, Teresa Van, Thomas Vu
-
 import java.util.Scanner;
+/**
+* <h1>Interface</h1>
+* This class implements methods used to print out console synopsis and messages
+* Assignment 2 CPSC449
+* @author  Daniel Dastoor, James Gilders, Carlin Liu, Teresa Van, Thomas Vu
+* @version 1.0
+* @since   2017-03-17
+*/
 public class Interface {
 	Scanner in;
 	/**
-	*Constructor for class that creates a new scanner
+	* Constructor for class that creates a new scanner
 	* @param None
 	* @return None  
 	*/
@@ -13,7 +18,7 @@ public class Interface {
 		in = new Scanner(System.in);
 	}
         /**
-	*Method used for returning input from console
+	* Method used for returning input from console
 	* @param None
 	* @return String containing Console Input
 	*/
@@ -21,7 +26,7 @@ public class Interface {
 		return(in.nextLine());
 	}
         /**
-	*Method used to print out MainLoop's Menu
+	* Method used to print out MainLoop's Menu
 	* @param None
 	* @return Void    
 	*/	
@@ -29,7 +34,7 @@ public class Interface {
 		System.out.println("q           : Quit the program.\nv           : Toggle verbose mode (stack traces).\nf           : List all known functions.\n?           : Print this helpful text.\n<expression>: Evaluate the expression.\nExpressions can be integers, floats, strings (surrounded in double quotes) or function calls of the form '(identifier {expression}*)'.");
 	}
 	/**
-	*Method that prints out synopsis that contains commands format line
+	* Method that prints out synopsis that contains commands format line
 	* @param None
 	* @return Void
 	*/
@@ -53,7 +58,7 @@ public class Interface {
 		System.out.println("Verbose on");
 	}
 	/**
-	*Method that prints out Verbose off
+	* Method that prints out Verbose off
 	* @param None  
 	* @return Void      
 	*/
@@ -69,7 +74,7 @@ public class Interface {
 		System.out.print("bye.");
 	}
 	/**
-	*Method that dumps the threads current stack
+	* Method that dumps the threads current stack
 	* @param V Boolean value containing the current verbose status
 	* @return Void      
 	*/
