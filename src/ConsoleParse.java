@@ -36,7 +36,7 @@ public class ConsoleParse
 				}
 				else
 				{
-					System.out.println("Unrecognized qualifier " + input[0]);
+					System.out.println("Unrecognized qualifier " + input[0] +".");
 					MainI.PrintSyn2();
 					System.exit(-1);
 				}
@@ -63,7 +63,7 @@ public class ConsoleParse
 					else 
 					{
 						noError = false;
-						System.out.println("Unrecognized qualifier '" + input[0].charAt(i1) + "' in '"+ input[0] + "' ");
+						System.out.println("Unrecognized qualifier '" + input[0].charAt(i1) + "' in '"+ input[0] + "'.");
 						MainI.PrintSyn2();
 						System.exit(-1);
 					}
@@ -83,7 +83,7 @@ public class ConsoleParse
 		}
 		else
 		{
-			System.out.println("Unrecognized qualifier '" + input[0] +"' ");
+			System.out.println("Unrecognized qualifier '" + input[0] +"'.");
 			MainI.PrintSyn2();
 			System.exit(-1);
 		}
@@ -117,17 +117,17 @@ public class ConsoleParse
 					if(Verbose == false)
 					{
 						Verbose = true;
-						MainI.PrintVerboseOn();
+						//MainI.PrintVerboseOn();
 					}
 					else
 					{
-						MainI.PrintVerboseOff();
+						//MainI.PrintVerboseOff();
 						Verbose = false;
 					}
 				}
 				else
 				{
-					System.out.println("Unrecognized qualifier " + input[0]);
+					System.out.println("Unrecognized qualifier " + input[0] +".");
 					MainI.PrintSyn2();
 					System.exit(-1);
 				}
@@ -157,7 +157,7 @@ public class ConsoleParse
 					else 
 					{
 						noError = false;
-						System.out.println("Unrecognized qualifier '" + input[0].charAt(i1) + "' in '"+ input[0] +"' ");
+						System.out.println("Unrecognized qualifier '" + input[0].charAt(i1) + "' in '"+ input[0] +"'.");
 						MainI.PrintSyn2();
 						System.exit(-1);
 					}
@@ -172,11 +172,11 @@ public class ConsoleParse
 					if(Verbose == false)
 					{
 						Verbose = true;
-						MainI.PrintVerboseOn();
+						//MainI.PrintVerboseOn();
 					}
 					else
 					{
-						MainI.PrintVerboseOff();
+						//MainI.PrintVerboseOff();
 						Verbose = false;
 					}
 					
@@ -186,7 +186,7 @@ public class ConsoleParse
 		}
 		else
 		{
-			System.out.println("Unrecognized qualifier '" + input[0] +"' ");
+			System.out.println("Unrecognized qualifier '" + input[0] +"'.");
 			MainI.PrintSyn2();
 			System.exit(-1);
 		}
