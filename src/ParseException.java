@@ -1,6 +1,6 @@
 import java.util.regex.MatchResult;
 /**
- * <h1>ParseException/h1>
+ * <h1>ParseException</h1>
  * This class handles methods used in ParseException
  * Assignment 2 CPSC449
  * @author  Daniel Dastoor, James Gilders, Carlin Liu, Teresa Van, Thomas Vu
@@ -15,7 +15,7 @@ public class ParseException extends RuntimeException {
     public ParseException() { super(); }
 
     /**
-     * This constructor sets the variables 
+     * This constructor sets the variables
      * @param msg Message to be printed
      * @param index Index used for error arrow
      * @param input Input used

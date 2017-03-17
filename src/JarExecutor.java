@@ -11,7 +11,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 /**
- * <h1>JarExecutor/h1>
+ * <h1>JarExecutor</h1>
  * This class implements the methods used to convert primitive types, execute desired methods and import the jar and class
  * Assignment 2 CPSC449
  * @author  Daniel Dastoor, James Gilders, Carlin Liu, Teresa Van, Thomas Vu
