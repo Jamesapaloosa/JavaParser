@@ -13,7 +13,18 @@ public class ReflectiveParser {
     public static String MenuC;
     public static Interface MainI = new Interface();
     public static JarExecutor jarExec;
-
+	/**
+	* Main method that handles the different lengths of input from the command line. The method will individually handle console
+	* arguments of length 0, 1, 2,3 and >3. For length 0 and 1 it will call the proper ParseProgramInput function and will exit the
+	* program after. For length 2 it will check if the first character of the first string is '-' and ends with ".jar". If it does
+	* it will defualt the class name to be "Commands" and will call the jarexecutor will the default. If it is not, it will assume 
+	* the console input is in the form <Jar file name> <class name> and will call the jarexecutor accordingly. It will then call the
+	* mainloop. If the length is 3, It will check if the 2nd argument has a jar file. If it does not it will print a error message.
+	* It will assume the form of the command line arguments to be <verbose> <Jar file name> <class name> and will parse the input 
+	* accordingly to call jarexecutor. It will then call mainloop. If it is greater than 3 it will give an error message.
+	* @param args an array of strings containing the command line input
+	* @return none
+	*/
     public static void main(String[] args) {
 
         ConsoleParse cp = new ConsoleParse();
@@ -74,7 +85,12 @@ public class ReflectiveParser {
         }
 
     }
-
+	/**
+	* The mainLoop method is used to handle the menu logic. The loop will recieve input from the interface and will compare it with
+	* the menu options of q, v, f and ?. It will call the corresponding functions and will end only when case 'q' is called.
+	* @param None
+	* @return void  
+	*/	
     public static void mainLoop() {
         while (Run == true) {
             System.out.print("> ");
