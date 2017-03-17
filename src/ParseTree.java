@@ -14,7 +14,6 @@ public class ParseTree {
     private ArrayList<MatchResult> matches;
     private JarExecutor jarExec;
 
-    //TODO: Error on "()"
     //TODO: Add constructor check for <value> <anything else> error case
     //TODO: Add constructor check for <expression> <anything else> error case
 
@@ -70,6 +69,9 @@ public class ParseTree {
         Node t, t1, t2;
         for (MatchResult m : matches) {
             if (m.group().equals(")")) {
+                if (stack.peek().value.equals("(")) {
+                    throw new ParseException("Missing identifier in funcall at offset " + m.start(), m.start(), input);
+                }
                 ArrayList<Node> children = new ArrayList<>();
                 t1 = stack.pop();
                 t2 = stack.peek();
