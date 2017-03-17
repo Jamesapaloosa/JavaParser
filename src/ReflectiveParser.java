@@ -23,7 +23,6 @@ public class ReflectiveParser {
 	* It will assume the form of the command line arguments to be <verbose> <Jar file name> <class name> and will parse the input 
 	* accordingly to call jarexecutor. It will then call mainloop. If it is greater than 3 it will give an error message.
 	* @param args an array of strings containing the command line input
-	* @return none
 	*/
     public static void main(String[] args) {
 
@@ -88,8 +87,6 @@ public class ReflectiveParser {
 	/**
 	* The mainLoop method is used to handle the menu logic. The loop will recieve input from the interface and will compare it with
 	* the menu options of q, v, f and ?. It will call the corresponding functions and will end only when case 'q' is called.
-	* @param None
-	* @return void  
 	*/	
     public static void mainLoop() {
         while (Run == true) {
