@@ -1,13 +1,10 @@
-import com.sun.xml.internal.bind.v2.model.util.ArrayInfoUtil;
-
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Stack;
 import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.Stack;
 import java.util.stream.Collectors;
 
 public class ParseTree {
