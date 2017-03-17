@@ -23,6 +23,7 @@ public class JarExecutor {
     public Class cls;
 
     public JarExecutor(String jarName, String className) {
+	Interface MainI = new Interface();
         Path currentRelativePath = Paths.get("");
         String pathway = currentRelativePath.toAbsolutePath().toString();
         //*****Change this for Linux("/") or Windows("\\")
@@ -41,6 +42,7 @@ public class JarExecutor {
             this.cls = cl.loadClass(className);
         } catch (ClassNotFoundException e) {
             System.out.println("Could not find class: " + className);
+	    MainI.PrintSyn2();
             System.exit(-6);
         } catch (FileNotFoundException | MalformedURLException q) {
             System.out.println("Could not load jar file: "+ jarName);
