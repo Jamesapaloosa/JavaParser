@@ -8,10 +8,10 @@
 */
 public class ReflectiveParser {
 
-    public static Boolean Verbose = false;
-    public static Boolean Run = true;
-    public static String MenuC;
-    public static Interface MainI = new Interface();
+    public static Boolean verbose = false;
+    public static Boolean run = true;
+    public static String menuC;
+    public static Interface mainI = new Interface();
     public static JarExecutor jarExec;
 	/**
 	* Main method that handles the different lengths of input from the command line. The method will individually handle console
@@ -34,22 +34,22 @@ public class ReflectiveParser {
 		
         if (args.length == 0) {
 
-            Verbose = cp.ParseProgramInput0(args, Verbose);
+            verbose = cp.ParseProgramInput0(args, verbose);
             System.exit(0);
 
         } else if (args.length == 1) {
 
-            Verbose = cp.ParseProgramInput1(args, Verbose);
+            verbose = cp.ParseProgramInput1(args, verbose);
             System.exit(0);
 
         } else if (args.length == 2) {
 
             if (args[0].charAt(0) == '-' && args[1].endsWith(".jar")) {
 
-                Verbose = cp.ParseProgramInput(args, Verbose);
+                verbose = cp.ParseProgramInput(args, verbose);
                     jarString = args[1];
                     functionClassName = "Commands";
-                    //jarExec = new Parser(jarString, functionClassName, Verbose);
+                    //jarExec = new Parser(jarString, functionClassName, verbose);
                     jarExec = new JarExecutor(jarString, functionClassName);
 					MainI.PrintMenu();
             } else {
@@ -63,7 +63,7 @@ public class ReflectiveParser {
 
         } else if (args.length == 3) {
 
-            Verbose = cp.ParseProgramInput(args, Verbose);
+            verbose = cp.ParseProgramInput(args, verbose);
                 if (args[1].endsWith(".jar")) {
                     jarString = args[1];
                 } else {
@@ -71,7 +71,7 @@ public class ReflectiveParser {
                     System.exit(-3);
                 }
                 functionClassName = args[2];
-		//jarExec = new Parser(jarString, functionClassName, Verbose);
+		//jarExec = new Parser(jarString, functionClassName, verbose);
                 jarExec = new JarExecutor(jarString, functionClassName);
 				MainI.PrintMenu();
 
@@ -89,23 +89,23 @@ public class ReflectiveParser {
 	* the menu options of q, v, f and ?. It will call the corresponding functions and will end only when case 'q' is called.
 	*/	
     public static void mainLoop() {
-        while (Run == true) {
+        while (run == true) {
             System.out.print("> ");
-            MenuC = MainI.GetInput().trim();
-            switch (MenuC) {
+            menuC = mainI.GetInput().trim();
+            switch (menuC) {
                 case "q":
-                    Run = false;
-                    MainI.PrintBye();
+                    run = false;
+                    mainI.PrintBye();
                     break;
 
                 case "v":
-                    if (Verbose == false) {
-                        Verbose = true;
-                        MainI.PrintVerboseOn();
+                    if (verbose == false) {
+                        verbose = true;
+                        mainI.PrintVerboseOn();
                         //jarExec.SetVerbose(true);
                     } else {
-                        MainI.PrintVerboseOff();
-                        Verbose = false;
+                        mainI.PrintVerboseOff();
+                        verbose = false;
                         //jarExec.SetVerbose(false);
                     }
                     break;
@@ -115,7 +115,7 @@ public class ReflectiveParser {
                     break;
 
                 case "?":
-                    MainI.PrintMenu();
+                    mainI.PrintMenu();
                     break;
 
                 case "":
@@ -123,10 +123,11 @@ public class ReflectiveParser {
 
                 default:
                     try {
-                        ParseTree p = new ParseTree(MenuC, jarExec);
+                        ParseTree p = new ParseTree(menuC, jarExec);
                         p.getEvaluation();
                     } catch (ParseException e) {
                         e.printErrorMessage();
+                        if (verbose) e.printStackTrace();
                     }
             }
         }

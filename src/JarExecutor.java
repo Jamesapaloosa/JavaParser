@@ -10,7 +10,14 @@ import java.net.URLClassLoader;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-
+/**
+ * <h1>JarExecutor/h1>
+ * This class implements the methods used to convert primitive types, execute desired methods and import the jar and class
+ * Assignment 2 CPSC449
+ * @author  Daniel Dastoor, James Gilders, Carlin Liu, Teresa Van, Thomas Vu
+ * @version 1.0
+ * @since   2017-03-17
+ */
 public class JarExecutor {
 
     private Class<?> className;
@@ -27,9 +34,8 @@ public class JarExecutor {
 	* it will try to load the class from the generated URL. If the class is not found it will catch with an error message. It 
 	* will then get the methods, fields and constructors in the current class. The function will loop to find all the current
 	* parameters of each method and will do the same for the return types.
-	* @param jarName is the string used for the jar name
-	* @param className is the string used for the class name
-	* @return None  
+	* @param jarName Is the string used for the jar name
+	* @param className Is the string used for the class name
 	*/
     public JarExecutor(String jarName, String className) {
 	Interface MainI = new Interface();
@@ -85,53 +91,30 @@ public class JarExecutor {
         }
     }
 
-    public Object executeMethod(String function, ArrayList<Object> parameters) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, IllegalArgumentException {
-        Method method;
-        Class[] parameterTypes = new Class[parameters.size()];
-        int i = 0;
-        Class<?> temp;
-        int j = parameters.size();
-        while (i < j){
-            temp = parameters.get(i).getClass();
-            if(temp.toString().equals("class java.lang.Integer")){
-                parameterTypes[i] = int.class;
-                parameters.set(i, ((int) parameters.get(i)));
-                //System.out.println(((Integer) parameters.get(i)).intValue());
-            }
-            else if(temp.toString().equals("class java.lang.Float")){
-                parameterTypes[i] = float.class;
-                parameters.set(i, (float) parameters.get(i));
-            }
-            else{
-                parameterTypes[i] = String.class;
-                parameters.set(i, (String)parameters.get(i));
-            }
-            i++;
-        }
-
-//        for(Object o: parameters){
-//            System.out.println(o.getClass());
-//            System.out.println(o);
-//        }
-//
-//        for(Class o: parameterTypes){
-//            System.out.println(o);
-//        }
-
+    /**
+     * This method will execute the method by taking in the function name and arraylist of parameters. It will match the
+     * java.lang.integer with a primitive type and will add it into an array. It will then invoke the method and return
+     * the result.
+     * @param function String that contains the function name
+     * @param parameters An arraylist of objects containing the functions parameters
+     * @return Object the result of the executed method
+     * @throws NoSuchMethodException Throw when method is not found
+     */
+    public Object executeMethod(String function, ArrayList<Object> parameters) throws NoSuchMethodException {
         Class[] ptypes = (Class[]) parameters.stream().map(this::toPrimitiveClass).toArray(size -> new Class[size]);
-
-//        for (int k = 0; k < ptypes.length; k++) {
-//            System.out.println(ptypes[k]);
-//        }
-
         try {
-            method = cls.getMethod(function, ptypes);
+            Method method = cls.getMethod(function, ptypes);
             return method.invoke(instance, parameters.toArray());
         } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException | IllegalArgumentException e) {
             throw new NoSuchMethodException(expressionString(function, parameters));
         }
     }
 
+    /**
+     * This method will take in an object and will match and return the same primitive class
+     * @param o Object to be converted
+     * @return Class object after conversion will be returned
+     */
     private Class toPrimitiveClass(Object o) {
         if (o instanceof Integer) {
             return int.class;
@@ -142,8 +125,14 @@ public class JarExecutor {
         }
     }
 
+    /**
+     * The method will go through all the parameters in the arraylist and will convert from java.lang.Integer to a string
+     * parameter. It will then append the strings together and return the expression.
+     * @param function Will take in the string containing the function
+     * @param parameters An arraylist of objects that contain the parameters
+     * @return String of the expression is returned
+     */
     private String expressionString(String function, ArrayList<Object> parameters){
-        //Class[] parameterTypes = new Class[parameters.size()];
         String[] parameterTypes = new String[parameters.size()];
         int i = 0;
         Class<?> temp;
@@ -152,15 +141,12 @@ public class JarExecutor {
             temp = parameters.get(i).getClass();
             if(temp.toString().equals("class java.lang.Integer")){
                 parameterTypes[i] = "int";
-                //parameterTypes[i] = int.class;
             }
             else if(temp.toString().equals("class java.lang.Float")){
                 parameterTypes[i] = "float";
-                //parameterTypes[i] = float.class;
             }
             else{
                 parameterTypes[i] = "string";
-                //parameterTypes[i] = String.class;
             }
             i++;
         }

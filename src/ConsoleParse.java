@@ -13,7 +13,7 @@ public class ConsoleParse
 	/**
 	* Method that parses console input that has length 0. It will create a new interface and will print the synopsis to console.
 	* @param input An array containing the console inputs
-	* @param Verbose The current boolean value of Verbose
+	* @param Verbose The current boolean value of verbose
 	* @return boolean Containing the updated status of verbose 
 	*/
 	public boolean ParseProgramInput0(String[] input, boolean Verbose)
@@ -32,7 +32,7 @@ public class ConsoleParse
 	* If it doesn't match it will print out an error message. At the end of the method the booleans are checked to see which prints 
 	* need to be made.
 	* @param input An array containing the console inputs
-	* @param Verbose The current boolean value of Verbose
+	* @param Verbose The current boolean value of verbose
 	* @return boolean Containing the updated status of verbose  
 	*/
 	public boolean ParseProgramInput1(String[] input, boolean Verbose) 
@@ -121,7 +121,7 @@ public class ConsoleParse
 	* string and will compare to the available parameters of 'h', '?' and 'v'. If these match it will set the corresponding boolean.
 	* or an error message. At the end of the method the booleans are checked to see which prints need to be made.
 	* @param input An array containing the console inputs
-	* @param Verbose The current boolean value of Verbose
+	* @param Verbose The current boolean value of verbose
 	* @return boolean Containing the updated status of verbose  
 	*/
 	public boolean ParseProgramInput(String[] input, boolean Verbose)
@@ -149,11 +149,11 @@ public class ConsoleParse
 					if(Verbose == false)
 					{
 						Verbose = true;
-						//MainI.PrintVerboseOn();
+						//mainI.PrintVerboseOn();
 					}
 					else
 					{
-						//MainI.PrintVerboseOff();
+						//mainI.PrintVerboseOff();
 						Verbose = false;
 					}
 				}
@@ -202,11 +202,11 @@ public class ConsoleParse
 					if(Verbose == false)
 					{
 						Verbose = true;
-						//MainI.PrintVerboseOn();
+						//mainI.PrintVerboseOn();
 					}
 					else
 					{
-						//MainI.PrintVerboseOff();
+						//mainI.PrintVerboseOff();
 						Verbose = false;
 					}
 				}

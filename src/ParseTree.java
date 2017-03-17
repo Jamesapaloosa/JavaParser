@@ -51,7 +51,7 @@ public class ParseTree {
             } else {
                 return jarExec.executeMethod((String) n.value, (ArrayList<Object>) n.children.stream().map(this::evaluate).collect(Collectors.toList()));
             }
-        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException | IllegalArgumentException e) {
+        } catch (NoSuchMethodException | IllegalArgumentException e) {
             throw new ParseException(e.getMessage(), n, input);
         }
     }
