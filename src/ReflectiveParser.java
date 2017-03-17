@@ -1,3 +1,11 @@
+/**
+* <h1>ReflectiveParser</h1>
+* This class implements the main method and handles the mainloop logic and how to parse the command line arguments
+* Assignment 2 CPSC449
+* @author  Daniel Dastoor, James Gilders, Carlin Liu, Teresa Van, Thomas Vu
+* @version 1.0
+* @since   2017-03-17
+*/
 public class ReflectiveParser {
 
     public static Boolean Verbose = false;
@@ -29,34 +37,16 @@ public class ReflectiveParser {
             if (args[0].charAt(0) == '-' && args[1].endsWith(".jar")) {
 
                 Verbose = cp.ParseProgramInput(args, Verbose);
-//                try {
                     jarString = args[1];
                     functionClassName = "Commands";
                     //jarExec = new Parser(jarString, functionClassName, Verbose);
                     jarExec = new JarExecutor(jarString, functionClassName);
 					MainI.PrintMenu();
-//                } catch (ClassNotFoundException e) {
-//                    System.out.println("Could not find class: " + functionClassName);
-//                    System.exit(0);
-//                } catch (Exception f) {
-//
-//                }
-
             } else {
-
-//                try {
                     jarString = args[0];
                     functionClassName = args[1];
                     jarExec = new JarExecutor(jarString, functionClassName);
 					MainI.PrintMenu();
-//                } catch (ClassNotFoundException e) {
-//                    System.out.println("Could not find class: " + functionClassName);
-//                    jarExec = new Parser();
-//                    System.exit(0);
-//                } catch (Exception f) {
-
-                //}
-
             }
 
             mainLoop();
@@ -64,8 +54,6 @@ public class ReflectiveParser {
         } else if (args.length == 3) {
 
             Verbose = cp.ParseProgramInput(args, Verbose);
-
-//            try {
                 if (args[1].endsWith(".jar")) {
                     jarString = args[1];
                 } else {
@@ -73,14 +61,8 @@ public class ReflectiveParser {
                     System.exit(-3);
                 }
                 functionClassName = args[2];
-                //jarExec = new Parser(jarString, functionClassName, Verbose);
                 jarExec = new JarExecutor(jarString, functionClassName);
 				MainI.PrintMenu();
-//            } catch (Exception e) {
-//                System.out.println("asdasdasd");
-//                jarExec = new Parser();
-//                System.exit(0);
-//            }
 
             mainLoop();
         } else {
@@ -90,13 +72,6 @@ public class ReflectiveParser {
 
         }
 
-
-//        try {
-//            ParseTree p = new ParseTree("(add 100 (mul 10 (len \"Hello world!\"))", jarExec);
-//            p.getEvaluation();
-//        } catch (ParseException e) {
-//            e.printErrorMessage();
-//        }
     }
 
     public static void mainLoop() {
