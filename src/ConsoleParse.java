@@ -108,9 +108,7 @@ public class ConsoleParse
 			System.exit(-1);
 		}
 		return(Verbose);
-	}
-	
-	
+	}	
 	/**
 	*Method that parses console input that has a length of 2 or more. The function will first create a new interface for all the printing
 	*and will then set default variables. It will then parse the first character of the first string and check if it contains '-'.
@@ -167,7 +165,6 @@ public class ConsoleParse
 				while(i1 < j1)
 				{
 					char x = input[0].charAt(i1);
-					
 					if(x == 'h')
 					{
 						System.out.println("Qualifier --help (-h, -?) should not appear with any command-line arguments.");
@@ -192,8 +189,7 @@ public class ConsoleParse
 						System.exit(-1);
 					}
 					i1++;
-				}
-				
+				}	
 			}
 			if(noError == true)
 			{
@@ -209,10 +205,8 @@ public class ConsoleParse
 						//MainI.PrintVerboseOff();
 						Verbose = false;
 					}
-					
 				}
 			}
-
 		}
 		else
 		{
