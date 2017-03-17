@@ -61,6 +61,7 @@ public class ReflectiveParser {
                     System.exit(-3);
                 }
                 functionClassName = args[2];
+		//jarExec = new Parser(jarString, functionClassName, Verbose);
                 jarExec = new JarExecutor(jarString, functionClassName);
 				MainI.PrintMenu();
 
