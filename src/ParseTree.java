@@ -14,6 +14,10 @@ public class ParseTree {
     private ArrayList<MatchResult> matches;
     private JarExecutor jarExec;
 
+    //TODO: Error on "()"
+    //TODO: Add constructor check for <value> <anything else> error case
+    //TODO: Add constructor check for <expression> <anything else> error case
+
     public ParseTree(String input, JarExecutor jarExec) throws ParseException {
         this.input = input;
     	this.jarExec = jarExec;
