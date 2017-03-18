@@ -1,5 +1,3 @@
-import java.lang.reflect.*;
-import java.util.*;
 /**
 * <h1>ConsoleParse</h1>
 * This class implements methods used to parse the command line arguments given to the program
@@ -149,11 +147,9 @@ public class ConsoleParse
 					if(Verbose == false)
 					{
 						Verbose = true;
-						//mainI.PrintVerboseOn();
 					}
 					else
 					{
-						//mainI.PrintVerboseOff();
 						Verbose = false;
 					}
 				}
@@ -202,11 +198,9 @@ public class ConsoleParse
 					if(Verbose == false)
 					{
 						Verbose = true;
-						//mainI.PrintVerboseOn();
 					}
 					else
 					{
-						//mainI.PrintVerboseOff();
 						Verbose = false;
 					}
 				}

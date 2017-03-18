@@ -20,7 +20,6 @@ import java.util.ArrayList;
  */
 public class JarExecutor {
 
-    private Class<?> className;
     private Method[] methods;
     private Field[] fields;
     private Constructor[] constructors;
@@ -41,9 +40,7 @@ public class JarExecutor {
 	Interface MainI = new Interface();
         Path currentRelativePath = Paths.get("");
         String pathway = currentRelativePath.toAbsolutePath().toString();
-        //*****Change this for Linux("/") or Windows("\\")
         pathway = pathway + "/"+jarName;
-        //*****
         try {
             File file = new File(pathway);
             if(!file.exists())

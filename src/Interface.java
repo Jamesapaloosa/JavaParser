@@ -58,14 +58,5 @@ public class Interface {
 	public void PrintBye(){
 		System.out.print("bye.");
 	}
-	/**
-	* Method that dumps the threads current stack
-	* @param V Boolean value containing the current verbose status
-	*/
-	public void PrintStack(boolean V){
-		if(V == true){
-			Thread.dumpStack();
-		}
-	}
 }
 

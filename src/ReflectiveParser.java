@@ -64,16 +64,15 @@ public class ReflectiveParser {
         } else if (args.length == 3) {
 
             verbose = cp.ParseProgramInput(args, verbose);
-                if (args[1].endsWith(".jar")) {
-                    jarString = args[1];
-                } else {
-                    System.out.println("This program requires a jar file as the first command line argument (after any qualifiers)");
-                    System.exit(-3);
-                }
-                functionClassName = args[2];
-		//jarExec = new Parser(jarString, functionClassName, verbose);
-                jarExec = new JarExecutor(jarString, functionClassName);
-				MainI.PrintMenu();
+            if (args[1].endsWith(".jar")) {
+                jarString = args[1];
+            } else {
+                System.out.println("This program requires a jar file as the first command line argument (after any qualifiers)");
+                System.exit(-3);
+            }
+            functionClassName = args[2];
+            jarExec = new JarExecutor(jarString, functionClassName);
+            MainI.PrintMenu();
 
             mainLoop();
         } else {
@@ -89,7 +88,7 @@ public class ReflectiveParser {
 	* the menu options of q, v, f and ?. It will call the corresponding functions and will end only when case 'q' is called.
 	*/	
     public static void mainLoop() {
-        while (run == true) {
+        while (run) {
             System.out.print("> ");
             menuC = mainI.GetInput().trim();
             switch (menuC) {
@@ -99,7 +98,7 @@ public class ReflectiveParser {
                     break;
 
                 case "v":
-                    if (verbose == false) {
+                    if (!verbose) {
                         verbose = true;
                         mainI.PrintVerboseOn();
                     } else {

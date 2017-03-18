@@ -1,4 +1,3 @@
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EmptyStackException;
@@ -21,9 +20,6 @@ public class ParseTree {
     public Node root;
     private ArrayList<MatchResult> matches;
     private JarExecutor jarExec;
-
-    //TODO: Add constructor check for <value> <anything else> error case
-    //TODO: Add constructor check for <expression> <anything else> error case
 
     /**
      * This constructor builds and tokenizes the parseTree. It will then validate
@@ -96,13 +92,10 @@ public class ParseTree {
                     ArrayList<Node> children = new ArrayList<>();
                     t1 = stack.pop();
                     t2 = stack.peek();
-                    //TODO: remove index
-                    int index = m.start() - 1;
                     while (!t2.value.equals("(")) {
                         children.add(t1);
                         t1 = stack.pop();
                         t2 = stack.peek();
-                        index--;
                     }
                     Collections.reverse(children);
                     t1.children = children;
