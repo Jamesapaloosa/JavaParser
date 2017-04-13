@@ -90,8 +90,9 @@ public class ReflectiveParser {
     public static void mainLoop() {
         while (run) {
             System.out.print("> ");
-            menuC = mainI.GetInput().trim();
-            switch (menuC) {
+            menuC = mainI.GetInput();
+            String trimmedMenuC = menuC.trim();
+            switch (trimmedMenuC) {
                 case "q":
                     run = false;
                     mainI.PrintBye();
